@@ -1,0 +1,185 @@
+import { motion } from "framer-motion";
+import { Target, Eye, Award, Users } from "lucide-react";
+
+const About = () => {
+  const timeline = [
+    { year: "2018", title: "Foundation", description: "Organization founded with mission to reduce post-harvest losses" },
+    { year: "2019", title: "First Prototype", description: "Initial solar dryer design completed and tested" },
+    { year: "2020", title: "Pilot Program", description: "Successful deployment with 50 farmers in Ghana" },
+    { year: "2021", title: "V2 Launch", description: "Siccator Solaris Intelligentis V2 with IoT capabilities released" },
+    { year: "2023", title: "Regional Expansion", description: "Expanded operations to 10 African countries" },
+    { year: "2024", title: "1000+ Farmers", description: "Over 1200 farmers empowered with smart drying technology" },
+  ];
+
+  const team = [
+    { name: "Dr. Kwabena Asante", role: "Founder & CEO", expertise: "Agricultural Engineering" },
+    { name: "Dr. Esi Mensah", role: "Head of R&D", expertise: "Renewable Energy Systems" },
+    { name: "Yaw Boateng", role: "IoT Lead", expertise: "Embedded Systems & AI" },
+    { name: "Akosua Frimpong", role: "Community Relations", expertise: "Farmer Training & Support" },
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero */}
+      <section className="relative py-32 gradient-hero">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-5xl lg:text-6xl font-bold text-primary-foreground mb-6">
+              About Our Mission
+            </h1>
+            <p className="text-xl text-primary-foreground/90 max-w-3xl mx-auto">
+              Empowering farmers with innovative solar drying technology to reduce waste, increase income, and build a sustainable agricultural future
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="glass rounded-2xl p-8"
+            >
+              <Target className="w-12 h-12 text-primary mb-4" />
+              <h2 className="text-3xl font-bold text-foreground mb-4">Our Mission</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                To revolutionize post-harvest processing in Africa by providing affordable, sustainable, and intelligent solar drying solutions that empower smallholder farmers, reduce food waste, and contribute to food security and climate action.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              className="glass rounded-2xl p-8"
+            >
+              <Eye className="w-12 h-12 text-primary mb-4" />
+              <h2 className="text-3xl font-bold text-foreground mb-4">Our Vision</h2>
+              <p className="text-muted-foreground leading-relaxed">
+                A future where every farmer in Africa has access to smart, sustainable technology that enables them to process their harvest efficiently, maximize their income, and contribute to a greener planet through renewable energy adoption.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline */}
+      <section className="py-20 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">Our Journey</h2>
+            <p className="text-xl text-muted-foreground">From concept to impact</p>
+          </motion.div>
+
+          <div className="relative">
+            {/* Timeline Line */}
+            <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-border" />
+
+            <div className="space-y-12">
+              {timeline.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`flex flex-col lg:flex-row items-center gap-8 ${
+                    index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+                  }`}
+                >
+                  <div className={`flex-1 ${index % 2 === 0 ? "lg:text-right" : "lg:text-left"}`}>
+                    <div className="bg-card rounded-xl p-6 shadow-md">
+                      <div className="text-2xl font-bold text-primary mb-2">{item.year}</div>
+                      <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
+                      <p className="text-muted-foreground">{item.description}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow z-10">
+                    <Award className="w-6 h-6 text-primary-foreground" />
+                  </div>
+                  
+                  <div className="flex-1 hidden lg:block" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Team */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">Leadership Team</h2>
+            <p className="text-xl text-muted-foreground">Experts driving innovation in agricultural technology</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {team.map((member, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group"
+              >
+                <div className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-glow transition-all duration-300 hover:-translate-y-2">
+                  <div className="aspect-square bg-gradient-primary" />
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
+                    <div className="text-primary font-medium mb-2">{member.role}</div>
+                    <p className="text-sm text-muted-foreground">{member.expertise}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Impact Map Placeholder */}
+      <section className="py-20 bg-muted">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">Global Impact</h2>
+            <p className="text-xl text-muted-foreground">Operating across 10+ countries in Africa</p>
+          </motion.div>
+
+          <div className="bg-card rounded-2xl p-12 text-center">
+            <Users className="w-16 h-16 text-primary mx-auto mb-4" />
+            <p className="text-xl text-muted-foreground">
+              Interactive impact map showing deployment regions, farmer networks, and success stories
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default About;
