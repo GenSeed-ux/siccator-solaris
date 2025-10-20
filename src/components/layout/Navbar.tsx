@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Leaf } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,6 +55,7 @@ const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden md:flex items-center space-x-2">
+            <ThemeToggle />
             <Link to="/login">
               <Button variant="outline" size="sm">Login</Button>
             </Link>
@@ -99,6 +101,7 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="pt-4 space-y-2">
+                <ThemeToggle />
                 <Link to="/login" onClick={() => setIsOpen(false)}>
                   <Button variant="outline" className="w-full">Login</Button>
                 </Link>
