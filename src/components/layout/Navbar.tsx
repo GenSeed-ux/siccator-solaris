@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, Leaf } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,9 +28,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center transition-transform group-hover:scale-110">
-              <Leaf className="w-6 h-6 text-primary-foreground" />
-            </div>
+            <img src={logo} alt="Siccator Solaris" className="w-10 h-10 transition-transform group-hover:scale-110" />
             <div className="hidden sm:block">
               <div className="text-lg font-bold text-foreground">Siccator Solaris</div>
               <div className="text-xs text-muted-foreground">Smart Agriculture</div>

@@ -7,9 +7,11 @@ import {
   Bell,
   Users,
   Activity,
-  Sun,
   ChevronLeft,
+  Cpu,
+  Brain,
 } from "lucide-react";
+import logo from "@/assets/logo.png";
 import {
   Sidebar,
   SidebarContent,
@@ -31,29 +33,34 @@ const menuItems = [
     url: "/dashboard",
   },
   {
+    title: "Devices",
+    icon: Cpu,
+    url: "/dashboard/devices",
+  },
+  {
+    title: "Farmers",
+    icon: Users,
+    url: "/dashboard/farmers",
+  },
+  {
+    title: "Monitoring",
+    icon: Activity,
+    url: "/dashboard/monitoring",
+  },
+  {
     title: "Analytics",
     icon: BarChart3,
     url: "/dashboard/analytics",
   },
   {
-    title: "Devices",
-    icon: Activity,
-    url: "/dashboard/devices",
-  },
-  {
-    title: "Reports",
-    icon: FileText,
-    url: "/dashboard/reports",
+    title: "AI Control",
+    icon: Brain,
+    url: "/dashboard/ai-control",
   },
   {
     title: "Alerts",
     icon: Bell,
     url: "/dashboard/alerts",
-  },
-  {
-    title: "Team",
-    icon: Users,
-    url: "/dashboard/team",
   },
   {
     title: "Settings",
@@ -80,19 +87,15 @@ export function DashboardSidebar() {
         <div className="px-6 py-6 border-b border-sidebar-border">
           {state !== "collapsed" ? (
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-forest to-energy flex items-center justify-center">
-                <Sun className="w-5 h-5 text-white" />
-              </div>
+              <img src={logo} alt="Siccator Solaris" className="w-10 h-10" />
               <div>
-                <h2 className="font-bold text-sidebar-foreground">Solar Dryer</h2>
-                <p className="text-xs text-sidebar-foreground/60">IoT Platform</p>
+                <h2 className="font-bold text-sidebar-foreground">Siccator Solaris</h2>
+                <p className="text-xs text-sidebar-foreground/60">Admin Portal</p>
               </div>
             </div>
           ) : (
             <div className="flex justify-center">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-forest to-energy flex items-center justify-center">
-                <Sun className="w-5 h-5 text-white" />
-              </div>
+              <img src={logo} alt="Siccator Solaris" className="w-10 h-10" />
             </div>
           )}
         </div>
