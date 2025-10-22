@@ -12,14 +12,6 @@ import Impact from "./pages/Impact";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import DashboardDevices from "./pages/dashboard/DashboardDevices";
-import DashboardFarmers from "./pages/dashboard/DashboardFarmers";
-import DashboardMonitoring from "./pages/dashboard/DashboardMonitoring";
-import DashboardAIControl from "./pages/dashboard/DashboardAIControl";
-import DashboardAnalytics from "./pages/dashboard/DashboardAnalytics";
-import DashboardAlerts from "./pages/dashboard/DashboardAlerts";
-import DashboardSettings from "./pages/dashboard/DashboardSettings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -42,14 +34,6 @@ const App = () => (
           
           {/* Pages without Layout */}
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Layout showFooter={false}><Dashboard /></Layout>} />
-          <Route path="/dashboard/devices" element={<Layout showFooter={false}><DashboardDevices /></Layout>} />
-          <Route path="/dashboard/farmers" element={<Layout showFooter={false}><DashboardFarmers /></Layout>} />
-          <Route path="/dashboard/monitoring" element={<Layout showFooter={false}><DashboardMonitoring /></Layout>} />
-          <Route path="/dashboard/ai-control" element={<Layout showFooter={false}><DashboardAIControl /></Layout>} />
-          <Route path="/dashboard/analytics" element={<Layout showFooter={false}><DashboardAnalytics /></Layout>} />
-          <Route path="/dashboard/alerts" element={<Layout showFooter={false}><DashboardAlerts /></Layout>} />
-          <Route path="/dashboard/settings" element={<Layout showFooter={false}><DashboardSettings /></Layout>} />
           
           {/* Catch-all */}
           <Route path="*" element={<NotFound />} />
