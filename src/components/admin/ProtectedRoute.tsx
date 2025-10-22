@@ -1,0 +1,21 @@
+import { Navigate } from "react-router-dom";
+import { useAdminAuth } from "@/contexts/AdminAuthContext";
+import { ReactNode } from "react";
+
+export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
+  const { user, isLoading } = useAdminAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin h-8 w-8 border-4 border-[#2E8B57] border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/admin/login" replace />;
+  }
+
+  return <>{children}</>;
+};
