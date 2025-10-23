@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Leaf, Sun, TrendingUp, Users, Award, ArrowRight } from "lucide-react";
 import CountUp from "react-countup";
+import { PilotRequestDialog } from "@/components/PilotRequestDialog";
 
 const Home = () => {
   const stats = [
@@ -76,12 +77,7 @@ const Home = () => {
               AI-powered IoT solar dryer reducing post-harvest loss, increasing farmer income, and supporting climate-smart sustainable agriculture
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact">
-                <Button size="lg" className="gradient-primary text-primary-foreground hover:opacity-90 shadow-glow text-lg px-8 py-6">
-                  Request a Pilot
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </Link>
+              <PilotRequestDialog />
               <Link to="/login">
                 <Button size="lg" variant="outline" className="bg-white/10 backdrop-blur-sm border-white/30 text-white hover:bg-white/20 text-lg px-8 py-6">
                   Monitor Your Dryer
