@@ -1,166 +1,199 @@
-import { motion } from "framer-motion";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { MetricCard } from "@/components/dashboard/MetricCard";
+import { AIInsights } from "@/components/dashboard/AIInsights";
+import { RealtimeChart } from "@/components/dashboard/RealtimeChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  Thermometer, 
-  Droplets, 
-  Clock, 
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import {
+  Thermometer,
+  Droplets,
+  Clock,
   Battery,
-  TrendingUp,
+  Fan,
+  Sun,
   AlertCircle,
-  Leaf
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Dashboard = () => {
-  // Mock data - in production this would come from the device/backend
+  // Mock real-time data
   const deviceStatus = {
     temperature: 45,
     humidity: 35,
     dryingTime: "2h 30m",
     batteryLevel: 85,
-    status: "Active Drying"
+    solarInput: 850,
+    fanSpeed: 75,
+    status: "Active Drying",
+    progress: 65,
   };
 
-  const stats = [
+  const metrics = [
     {
       title: "Temperature",
       value: `${deviceStatus.temperature}°C`,
       icon: Thermometer,
-      color: "text-orange-500",
-      trend: "+2°C"
+      trend: "Optimal range",
+      status: "good" as const,
     },
     {
       title: "Humidity",
       value: `${deviceStatus.humidity}%`,
       icon: Droplets,
-      color: "text-blue-500",
-      trend: "-5%"
-    },
-    {
-      title: "Drying Time",
-      value: deviceStatus.dryingTime,
-      icon: Clock,
-      color: "text-purple-500",
-      trend: "On track"
+      trend: "Decreasing",
+      status: "good" as const,
     },
     {
       title: "Battery Level",
       value: `${deviceStatus.batteryLevel}%`,
       icon: Battery,
-      color: "text-green-500",
-      trend: "Good"
-    }
+      trend: "Charging",
+      status: "good" as const,
+    },
+    {
+      title: "Solar Input",
+      value: `${deviceStatus.solarInput}W`,
+      icon: Sun,
+      trend: "Peak hours",
+      status: "good" as const,
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted to-background">
-      {/* Header */}
-      <div className="bg-card border-b border-border">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-glow">
-                <Leaf className="w-6 h-6 text-primary-foreground" />
+    <SidebarProvider defaultOpen={true}>
+      <div className="min-h-screen flex w-full bg-background">
+        <DashboardSidebar />
+        
+        <main className="flex-1 overflow-auto">
+          {/* Header */}
+          <div className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
+            <div className="flex items-center justify-between px-6 py-4">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger />
+                <div>
+                  <h1 className="text-2xl font-bold text-foreground">Dashboard Overview</h1>
+                  <p className="text-sm text-muted-foreground">Real-time monitoring and AI insights</p>
+                </div>
               </div>
-              <div>
-                <h1 className="text-2xl font-bold text-foreground">Siccator Solaris Dashboard</h1>
-                <p className="text-sm text-muted-foreground">Device ID: DEMO-001</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-500/10 border border-green-500/30">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-sm font-medium text-green-700 dark:text-green-400">
+              <Badge className="flex items-center gap-2 px-4 py-2 bg-green-500/10 text-green-700 dark:text-green-400 border-green-500/30 hover:bg-green-500/20">
+                <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                 {deviceStatus.status}
-              </span>
+              </Badge>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {stats.map((stat, index) => (
+          {/* Main Content */}
+          <div className="p-6 space-y-6">
+            {/* Metrics Grid */}
             <motion.div
-              key={stat.title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"
             >
-              <Card>
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </CardTitle>
-                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-foreground">{stat.value}</div>
-                  <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
-                    <TrendingUp className="h-3 w-3" />
-                    {stat.trend}
-                  </p>
-                </CardContent>
-              </Card>
+              {metrics.map((metric, index) => (
+                <motion.div
+                  key={metric.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <MetricCard {...metric} />
+                </motion.div>
+              ))}
             </motion.div>
-          ))}
-        </div>
 
-        {/* Current Status Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertCircle className="h-5 w-5 text-primary" />
-                Current Drying Session
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Crop Type:</span>
-                  <span className="font-medium text-foreground">Tomatoes</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Start Time:</span>
-                  <span className="font-medium text-foreground">10:30 AM</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Estimated Completion:</span>
-                  <span className="font-medium text-foreground">1:00 PM</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Progress:</span>
-                  <span className="font-medium text-foreground">65%</span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2 mt-2">
-                  <div 
-                    className="gradient-primary h-2 rounded-full transition-all duration-500" 
-                    style={{ width: '65%' }}
-                  />
-                </div>
+            {/* Current Session & Chart */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                className="lg:col-span-1"
+              >
+                <Card className="h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Clock className="h-5 w-5 text-primary" />
+                      Current Session
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Crop Type</span>
+                        <span className="font-medium text-foreground">Tomatoes</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Start Time</span>
+                        <span className="font-medium text-foreground">10:30 AM</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Est. Completion</span>
+                        <span className="font-medium text-foreground">1:00 PM</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm text-muted-foreground">Fan Speed</span>
+                        <span className="font-medium text-foreground">{deviceStatus.fanSpeed}%</span>
+                      </div>
+                    </div>
+
+                    <div className="pt-4 space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Progress</span>
+                        <span className="font-medium text-foreground">{deviceStatus.progress}%</span>
+                      </div>
+                      <Progress value={deviceStatus.progress} className="h-3" />
+                    </div>
+
+                    <div className="pt-4 flex items-center gap-2 text-sm text-muted-foreground">
+                      <Fan className="h-4 w-4 animate-spin" />
+                      <span>Active drying in progress...</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                className="lg:col-span-2"
+              >
+                <RealtimeChart />
+              </motion.div>
+            </div>
+
+            {/* AI Insights */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <AIInsights />
+            </motion.div>
+
+            {/* Info Alert */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="p-4 bg-accent/10 rounded-lg border border-accent/30 flex items-start gap-3"
+            >
+              <AlertCircle className="h-5 w-5 text-accent flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <p className="text-sm text-foreground">
+                  <strong>Demo Mode:</strong> This dashboard displays simulated real-time data. 
+                  In production, it will connect to your Siccator Solaris device via IoT sensors 
+                  for live monitoring and AI-powered optimization.
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-
-        {/* Info Alert */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="mt-6 p-4 bg-accent/10 rounded-lg border border-accent/30"
-        >
-          <p className="text-sm text-muted-foreground text-center">
-            <strong>Note:</strong> This is a demo dashboard. In production, real-time data from your Siccator Solaris device would be displayed here.
-          </p>
-        </motion.div>
+            </motion.div>
+          </div>
+        </main>
       </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
