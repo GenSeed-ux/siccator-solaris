@@ -12,6 +12,7 @@ import Impact from "./pages/Impact";
 import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
@@ -45,6 +46,7 @@ const App = () => (
             
             {/* Pages without Layout */}
             <Route path="/login" element={<Login />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
