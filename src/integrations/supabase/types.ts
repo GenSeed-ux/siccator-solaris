@@ -161,6 +161,87 @@ export type Database = {
         }
         Relationships: []
       }
+      crop_profiles: {
+        Row: {
+          created_at: string
+          crop_name: string
+          description: string | null
+          estimated_hours: number
+          id: string
+          optimal_humidity_max: number
+          optimal_temp_max: number
+          optimal_temp_min: number
+        }
+        Insert: {
+          created_at?: string
+          crop_name: string
+          description?: string | null
+          estimated_hours: number
+          id?: string
+          optimal_humidity_max: number
+          optimal_temp_max: number
+          optimal_temp_min: number
+        }
+        Update: {
+          created_at?: string
+          crop_name?: string
+          description?: string | null
+          estimated_hours?: number
+          id?: string
+          optimal_humidity_max?: number
+          optimal_temp_max?: number
+          optimal_temp_min?: number
+        }
+        Relationships: []
+      }
+      drying_sessions: {
+        Row: {
+          created_at: string
+          crop_type: string
+          end_time: string | null
+          estimated_completion: string | null
+          id: string
+          initial_moisture: number | null
+          mode: string
+          power_mode: string
+          start_time: string | null
+          status: string
+          target_temperature: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          crop_type: string
+          end_time?: string | null
+          estimated_completion?: string | null
+          id?: string
+          initial_moisture?: number | null
+          mode?: string
+          power_mode?: string
+          start_time?: string | null
+          status?: string
+          target_temperature?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          crop_type?: string
+          end_time?: string | null
+          estimated_completion?: string | null
+          id?: string
+          initial_moisture?: number | null
+          mode?: string
+          power_mode?: string
+          start_time?: string | null
+          status?: string
+          target_temperature?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       home_content: {
         Row: {
           created_at: string
@@ -277,6 +358,74 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      sensor_readings: {
+        Row: {
+          created_at: string
+          current: number | null
+          energy: number | null
+          frequency: number | null
+          humidity_bottom: number | null
+          humidity_top: number | null
+          id: string
+          light_intensity: number | null
+          moisture_level: number | null
+          power: number | null
+          power_factor: number | null
+          session_id: string | null
+          temp_bottom: number | null
+          temp_top: number | null
+          timestamp: string
+          voc_level: number | null
+          voltage: number | null
+        }
+        Insert: {
+          created_at?: string
+          current?: number | null
+          energy?: number | null
+          frequency?: number | null
+          humidity_bottom?: number | null
+          humidity_top?: number | null
+          id?: string
+          light_intensity?: number | null
+          moisture_level?: number | null
+          power?: number | null
+          power_factor?: number | null
+          session_id?: string | null
+          temp_bottom?: number | null
+          temp_top?: number | null
+          timestamp?: string
+          voc_level?: number | null
+          voltage?: number | null
+        }
+        Update: {
+          created_at?: string
+          current?: number | null
+          energy?: number | null
+          frequency?: number | null
+          humidity_bottom?: number | null
+          humidity_top?: number | null
+          id?: string
+          light_intensity?: number | null
+          moisture_level?: number | null
+          power?: number | null
+          power_factor?: number | null
+          session_id?: string | null
+          temp_bottom?: number | null
+          temp_top?: number | null
+          timestamp?: string
+          voc_level?: number | null
+          voltage?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sensor_readings_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "drying_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       stories_testimonials: {
         Row: {
