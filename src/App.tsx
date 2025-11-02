@@ -13,6 +13,10 @@ import Blog from "./pages/Blog";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import DashboardAnalytics from "./pages/dashboard/Analytics";
+import DashboardHistory from "./pages/dashboard/History";
+import DashboardAlerts from "./pages/dashboard/Alerts";
+import DashboardSettings from "./pages/dashboard/Settings";
 import NotFound from "./pages/NotFound";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
@@ -47,6 +51,10 @@ const App = () => (
             {/* Pages without Layout */}
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/analytics" element={<DashboardAnalytics />} />
+            <Route path="/dashboard/history" element={<DashboardHistory />} />
+            <Route path="/dashboard/alerts" element={<DashboardAlerts />} />
+            <Route path="/dashboard/settings" element={<DashboardSettings />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
