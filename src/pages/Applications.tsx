@@ -1,96 +1,30 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 
 const Applications = () => {
   const [selectedCrop, setSelectedCrop] = useState<any>(null);
+  const [crops, setCrops] = useState<any[]>([]);
 
-  const crops = [
-    {
-      name: "Cocoa Beans",
-      image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80",
-      dryingTime: "48-72 hours",
-      temperature: "50-60°C",
-      moisture: "7-8%",
-      benefits: [
-        "Consistent quality for premium pricing",
-        "Prevents mold and aflatoxin",
-        "Preserves flavor profile",
-        "Extends storage life to 12+ months",
-      ],
-      roi: "+150% income increase vs traditional drying",
-    },
-    {
-      name: "Cassava Chips",
-      image: "https://images.unsplash.com/photo-1604916287784-c324202b3205?auto=format&fit=crop&q=80",
-      dryingTime: "24-36 hours",
-      temperature: "55-65°C",
-      moisture: "12-14%",
-      benefits: [
-        "Reduces drying time by 70%",
-        "Uniform chip quality",
-        "Eliminates contamination",
-        "Enables year-round processing",
-      ],
-      roi: "+120% productivity improvement",
-    },
-    {
-      name: "Maize / Corn",
-      image: "https://images.unsplash.com/photo-1551754655-cd27e38d2076?auto=format&fit=crop&q=80",
-      dryingTime: "18-30 hours",
-      temperature: "45-55°C",
-      moisture: "13-14%",
-      benefits: [
-        "Prevents insect infestation",
-        "Maintains nutritional value",
-        "Suitable for milling and storage",
-        "Reduces mycotoxin risk",
-      ],
-      roi: "+85% reduction in post-harvest loss",
-    },
-    {
-      name: "Chili Peppers",
-      image: "https://images.unsplash.com/photo-1583663848850-46af132dc08e?auto=format&fit=crop&q=80",
-      dryingTime: "36-48 hours",
-      temperature: "50-60°C",
-      moisture: "8-10%",
-      benefits: [
-        "Retains vibrant color and pungency",
-        "Prevents color degradation",
-        "Premium market access",
-        "Value-added processing",
-      ],
-      roi: "+200% value addition potential",
-    },
-    {
-      name: "Fish & Seafood",
-      image: "https://images.unsplash.com/photo-1534080564583-6be75777b70a?auto=format&fit=crop&q=80",
-      dryingTime: "12-24 hours",
-      temperature: "40-50°C",
-      moisture: "15-18%",
-      benefits: [
-        "Hygienic smoke-free drying",
-        "Prevents bacterial contamination",
-        "Longer shelf life",
-        "Export quality standards",
-      ],
-      roi: "+180% income from quality premium",
-    },
-    {
-      name: "Spices & Herbs",
-      image: "https://images.unsplash.com/photo-1596040033229-a0b535f7c3a9?auto=format&fit=crop&q=80",
-      dryingTime: "24-36 hours",
-      temperature: "35-45°C",
-      moisture: "8-12%",
-      benefits: [
-        "Preserves essential oils",
-        "Maintains aroma and flavor",
-        "Prevents discoloration",
-        "Organic certification compatible",
-      ],
-      roi: "+160% market value improvement",
-    },
-  ];
+  useEffect(() => {
+    const loadCrops = async () => {
+      const { data } = await supabase.from("crop_applications").select("*").order("display_order");
+      if (data) {
+        setCrops(data.map(c => ({
+          name: c.crop_name,
+          image: c.image_url || "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80",
+          dryingTime: c.drying_time,
+          temperature: c.temperature_range,
+          moisture: c.humidity_range,
+          benefits: c.benefits || [],
+          roi: `+${c.roi_percentage}% income increase`,
+          category: c.category
+        })));
+      }
+    };
+    loadCrops();
+  }, []);
 
   return (
     <div className="min-h-screen">

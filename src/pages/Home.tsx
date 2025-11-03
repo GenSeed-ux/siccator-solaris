@@ -4,14 +4,40 @@ import { Button } from "@/components/ui/button";
 import { Leaf, Sun, TrendingUp, Users, Award, ArrowRight } from "lucide-react";
 import CountUp from "react-countup";
 import { PilotRequestDialog } from "@/components/PilotRequestDialog";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Home = () => {
-  const stats = [
-    { value: 85, label: "Post-Harvest Loss Reduction", suffix: "%" },
-    { value: 1200, label: "Farmers Empowered", suffix: "+" },
-    { value: 60, label: "Income Increase", suffix: "%" },
-    { value: 10, label: "Countries Deployed", suffix: "+" },
-  ];
+  const [content, setContent] = useState<any>(null);
+  const [stats, setStats] = useState<any[]>([]);
+  const [testimonials, setTestimonials] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const [homeData, metricsData, storiesData] = await Promise.all([
+        supabase.from("home_content").select("*").single(),
+        supabase.from("impact_metrics").select("*").order("display_order"),
+        supabase.from("stories_testimonials").select("*").eq("type", "testimonial").eq("is_featured", true).order("display_order").limit(3),
+      ]);
+
+      if (homeData.data) setContent(homeData.data);
+      if (metricsData.data) {
+        setStats(metricsData.data.map(m => ({
+          value: m.metric_value,
+          label: m.metric_label,
+          suffix: m.metric_unit || ""
+        })));
+      }
+      if (storiesData.data) {
+        setTestimonials(storiesData.data.map(s => ({
+          name: s.name,
+          role: s.role || s.location,
+          text: s.quote
+        })));
+      }
+    };
+    loadData();
+  }, []);
 
   const features = [
     {
@@ -36,24 +62,6 @@ const Home = () => {
     },
   ];
 
-  const testimonials = [
-    {
-      name: "Kwame Mensah",
-      role: "Cocoa Farmer, Ghana",
-      text: "The Siccator Solaris changed everything for me. I can now dry my cocoa consistently, and my income has doubled!",
-    },
-    {
-      name: "Ama Serwaa",
-      role: "Cassava Cooperative Leader",
-      text: "With the solar dryer, we've reduced waste by 90% and can now supply consistent quality to our buyers.",
-    },
-    {
-      name: "John Osei",
-      role: "Agricultural Extension Officer",
-      text: "This technology is a game-changer for smallholder farmers. It's affordable, sustainable, and truly effective.",
-    },
-  ];
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -70,11 +78,10 @@ const Home = () => {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-              Revolutionizing Agriculture with
-              <span className="block text-accent">Intelligent Solar Drying</span>
+              {content?.headline || "Revolutionizing Agriculture with Intelligent Solar Drying"}
             </h1>
             <p className="text-xl sm:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
-              AI-powered IoT solar dryer reducing post-harvest loss, increasing farmer income, and supporting climate-smart sustainable agriculture
+              {content?.subtext || "AI-powered IoT solar dryer reducing post-harvest loss, increasing farmer income, and supporting climate-smart sustainable agriculture"}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <PilotRequestDialog />

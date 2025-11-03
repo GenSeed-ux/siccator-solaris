@@ -1,8 +1,19 @@
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Cpu, Wifi, Sun, Thermometer, Droplets, Wind, Zap, Shield } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Technology = () => {
+  const [sections, setSections] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadSections = async () => {
+      const { data } = await supabase.from("technology_content").select("*").order("display_order");
+      if (data) setSections(data);
+    };
+    loadSections();
+  }, []);
   const features = [
     {
       icon: Cpu,

@@ -4,11 +4,50 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Contact = () => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    organization: "",
+    inquiryType: "Request Pilot Program",
+    message: ""
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you within 24 hours.");
+    setLoading(true);
+    
+    const { error } = await supabase.from("pilot_requests").insert({
+      full_name: `${formData.firstName} ${formData.lastName}`,
+      email: formData.email,
+      phone: formData.phone,
+      organization: formData.organization,
+      message: `${formData.inquiryType}: ${formData.message}`,
+      location: "Not specified"
+    });
+
+    setLoading(false);
+    
+    if (error) {
+      toast.error("Failed to send message. Please try again.");
+    } else {
+      toast.success("Message sent! We'll get back to you within 24 hours.");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        organization: "",
+        inquiryType: "Request Pilot Program",
+        message: ""
+      });
+    }
   };
 
   const contactInfo = [
@@ -107,13 +146,13 @@ const Contact = () => {
                       <label className="block text-sm font-medium text-foreground mb-2">
                         First Name
                       </label>
-                      <Input placeholder="John" required />
+                      <Input placeholder="John" required value={formData.firstName} onChange={(e) => setFormData({...formData, firstName: e.target.value})} />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-foreground mb-2">
                         Last Name
                       </label>
-                      <Input placeholder="Doe" required />
+                      <Input placeholder="Doe" required value={formData.lastName} onChange={(e) => setFormData({...formData, lastName: e.target.value})} />
                     </div>
                   </div>
 
@@ -121,28 +160,28 @@ const Contact = () => {
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Email Address
                     </label>
-                    <Input type="email" placeholder="john@example.com" required />
+                    <Input type="email" placeholder="john@example.com" required value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Phone Number
                     </label>
-                    <Input type="tel" placeholder="+233 XX XXX XXXX" />
+                    <Input type="tel" placeholder="+233 XX XXX XXXX" value={formData.phone} onChange={(e) => setFormData({...formData, phone: e.target.value})} />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Organization / Farm Name
                     </label>
-                    <Input placeholder="Your Organization" />
+                    <Input placeholder="Your Organization" value={formData.organization} onChange={(e) => setFormData({...formData, organization: e.target.value})} />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Inquiry Type
                     </label>
-                    <select className="w-full px-4 py-2 rounded-lg border-2 border-input bg-background focus:border-primary outline-none">
+                    <select className="w-full px-4 py-2 rounded-lg border-2 border-input bg-background focus:border-primary outline-none" value={formData.inquiryType} onChange={(e) => setFormData({...formData, inquiryType: e.target.value})}>
                       <option>Request Pilot Program</option>
                       <option>Technical Support</option>
                       <option>Partnership Inquiry</option>
@@ -159,12 +198,14 @@ const Contact = () => {
                       placeholder="Tell us about your needs and how we can help..."
                       rows={5}
                       required
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
                     />
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full gradient-primary text-primary-foreground">
+                  <Button type="submit" size="lg" className="w-full gradient-primary text-primary-foreground" disabled={loading}>
                     <Send className="mr-2 w-5 h-5" />
-                    Send Message
+                    {loading ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </div>

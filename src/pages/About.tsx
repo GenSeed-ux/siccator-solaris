@@ -1,22 +1,27 @@
 import { motion } from "framer-motion";
 import { Target, Eye, Award, Users } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const About = () => {
-  const timeline = [
-    { year: "2018", title: "Foundation", description: "Organization founded with mission to reduce post-harvest losses" },
-    { year: "2019", title: "First Prototype", description: "Initial solar dryer design completed and tested" },
-    { year: "2020", title: "Pilot Program", description: "Successful deployment with 50 farmers in Ghana" },
-    { year: "2021", title: "V2 Launch", description: "Siccator Solaris Intelligentis V2 with IoT capabilities released" },
-    { year: "2023", title: "Regional Expansion", description: "Expanded operations to 10 African countries" },
-    { year: "2024", title: "1000+ Farmers", description: "Over 1200 farmers empowered with smart drying technology" },
-  ];
+  const [content, setContent] = useState<any>(null);
+  const [timeline, setTimeline] = useState<any[]>([]);
+  const [team, setTeam] = useState<any[]>([]);
 
-  const team = [
-    { name: "Dr. Kwabena Asante", role: "Founder & CEO", expertise: "Agricultural Engineering" },
-    { name: "Dr. Esi Mensah", role: "Head of R&D", expertise: "Renewable Energy Systems" },
-    { name: "Yaw Boateng", role: "IoT Lead", expertise: "Embedded Systems & AI" },
-    { name: "Akosua Frimpong", role: "Community Relations", expertise: "Farmer Training & Support" },
-  ];
+  useEffect(() => {
+    const loadData = async () => {
+      const [aboutData, timelineData, teamData] = await Promise.all([
+        supabase.from("about_content").select("*").single(),
+        supabase.from("timeline_events").select("*").order("display_order"),
+        supabase.from("team_members").select("*").order("display_order"),
+      ]);
+
+      if (aboutData.data) setContent(aboutData.data);
+      if (timelineData.data) setTimeline(timelineData.data);
+      if (teamData.data) setTeam(teamData.data);
+    };
+    loadData();
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -51,7 +56,7 @@ const About = () => {
               <Target className="w-12 h-12 text-primary mb-4" />
               <h2 className="text-3xl font-bold text-foreground mb-4">Our Mission</h2>
               <p className="text-muted-foreground leading-relaxed">
-                To revolutionize post-harvest processing in Africa by providing affordable, sustainable, and intelligent solar drying solutions that empower smallholder farmers, reduce food waste, and contribute to food security and climate action.
+                {content?.mission || "To revolutionize post-harvest processing in Africa by providing affordable, sustainable, and intelligent solar drying solutions that empower smallholder farmers, reduce food waste, and contribute to food security and climate action."}
               </p>
             </motion.div>
 
@@ -64,7 +69,7 @@ const About = () => {
               <Eye className="w-12 h-12 text-primary mb-4" />
               <h2 className="text-3xl font-bold text-foreground mb-4">Our Vision</h2>
               <p className="text-muted-foreground leading-relaxed">
-                A future where every farmer in Africa has access to smart, sustainable technology that enables them to process their harvest efficiently, maximize their income, and contribute to a greener planet through renewable energy adoption.
+                {content?.vision || "A future where every farmer in Africa has access to smart, sustainable technology that enables them to process their harvest efficiently, maximize their income, and contribute to a greener planet through renewable energy adoption."}
               </p>
             </motion.div>
           </div>
@@ -144,10 +149,14 @@ const About = () => {
                 className="group"
               >
                 <div className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-glow transition-all duration-300 hover:-translate-y-2">
-                  <div className="aspect-square bg-gradient-primary" />
+                  {member.image_url ? (
+                    <img src={member.image_url} alt={member.name} className="aspect-square w-full object-cover" />
+                  ) : (
+                    <div className="aspect-square bg-gradient-primary" />
+                  )}
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
-                    <div className="text-primary font-medium mb-2">{member.role}</div>
+                    <div className="text-primary font-medium mb-2">{member.title}</div>
                     <p className="text-sm text-muted-foreground">{member.expertise}</p>
                   </div>
                 </div>

@@ -2,9 +2,32 @@ import { motion } from "framer-motion";
 import { Calendar, User, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Blog = () => {
-  const articles = [
+  const [articles, setArticles] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadArticles = async () => {
+      const { data } = await supabase.from("blog_posts").select("*").eq("is_published", true).order("published_at", { ascending: false });
+      if (data) {
+        setArticles(data.map(post => ({
+          id: post.id,
+          title: post.title,
+          excerpt: post.summary,
+          image: post.featured_image_url || "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80",
+          category: post.category,
+          author: post.author,
+          date: new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          readTime: `${post.read_time || 5} min read`
+        })));
+      }
+    };
+    loadArticles();
+  }, []);
+
+  const fallbackArticles = [
     {
       id: 1,
       title: "How Solar Drying is Transforming Cocoa Farming in Ghana",
@@ -67,6 +90,7 @@ const Blog = () => {
     },
   ];
 
+  const displayArticles = articles.length > 0 ? articles : fallbackArticles;
   const categories = ["All", "Success Stories", "Technology", "Sustainability", "Case Studies", "Impact"];
 
   return (
@@ -110,7 +134,7 @@ const Blog = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article, index) => (
+            {displayArticles.map((article, index) => (
               <motion.article
                 key={article.id}
                 initial={{ opacity: 0, y: 30 }}

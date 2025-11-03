@@ -1,8 +1,19 @@
 import { motion } from "framer-motion";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { Target, Users, TrendingUp, Leaf, DollarSign, Award } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Impact = () => {
+  const [metrics, setMetrics] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadMetrics = async () => {
+      const { data } = await supabase.from("impact_metrics").select("*").order("display_order");
+      if (data) setMetrics(data);
+    };
+    loadMetrics();
+  }, []);
   const sdgGoals = [
     { number: 1, title: "No Poverty", description: "Increasing farmer income by 60%+ through reduced losses" },
     { number: 2, title: "Zero Hunger", description: "Reducing post-harvest loss by 85% ensures food security" },
@@ -59,12 +70,35 @@ const Impact = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: Users, value: "1,200+", label: "Farmers Empowered", color: "text-primary" },
-              { icon: DollarSign, value: "$4.2M", label: "Additional Income Generated", color: "text-energy" },
-              { icon: Leaf, value: "2,400", label: "Tons CO₂ Saved Annually", color: "text-accent" },
-              { icon: Award, value: "85%", label: "Post-Harvest Loss Reduction", color: "text-primary" },
-            ].map((metric, index) => (
+            {metrics.length > 0 ? metrics.slice(0, 4).map((metric, index) => {
+              const icons = [Users, DollarSign, Leaf, Award];
+              const colors = ["text-primary", "text-energy", "text-accent", "text-primary"];
+              const Icon = icons[index % icons.length];
+              
+              return (
+                <motion.div
+                  key={metric.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="glass rounded-xl p-6 text-center hover:shadow-glow transition-all"
+                >
+                  <Icon className={`w-12 h-12 mx-auto mb-4 ${colors[index % colors.length]}`} />
+                  <div className="text-4xl font-bold text-foreground mb-2">
+                    {metric.metric_value}{metric.metric_unit || ""}
+                  </div>
+                  <div className="text-muted-foreground">{metric.metric_label}</div>
+                </motion.div>
+              );
+            }) : (
+              <>
+                {[
+                  { icon: Users, value: "1,200+", label: "Farmers Empowered", color: "text-primary" },
+                  { icon: DollarSign, value: "$4.2M", label: "Additional Income Generated", color: "text-energy" },
+                  { icon: Leaf, value: "2,400", label: "Tons CO₂ Saved Annually", color: "text-accent" },
+                  { icon: Award, value: "85%", label: "Post-Harvest Loss Reduction", color: "text-primary" },
+                ].map((metric, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -75,9 +109,10 @@ const Impact = () => {
               >
                 <metric.icon className={`w-12 h-12 mx-auto mb-4 ${metric.color}`} />
                 <div className="text-4xl font-bold text-foreground mb-2">{metric.value}</div>
-                <div className="text-muted-foreground">{metric.label}</div>
-              </motion.div>
-            ))}
+              <div className="text-muted-foreground">{metric.label}</div>
+            </motion.div>
+          ))}</>
+          )}
           </div>
         </div>
       </section>
