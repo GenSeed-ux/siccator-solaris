@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Save, Plus, Trash2 } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Image as ImageIcon } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const AdminAbout = () => {
   const { toast } = useToast();
@@ -14,6 +15,8 @@ const AdminAbout = () => {
   const [teamMembers, setTeamMembers] = useState<any[]>([]);
   const [timeline, setTimeline] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState<string | null>(null);
+  const imageInputRefs = useRef<{ [key: number]: HTMLInputElement | null }>({});
 
   useEffect(() => {
     loadContent();
@@ -59,6 +62,97 @@ const AdminAbout = () => {
     ]);
   };
 
+  const handleImageUpload = async (index: number, file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({
+        title: "Error",
+        description: "Please upload an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploadingImage(`member-${index}`);
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `team-${Date.now()}-${index}.${fileExt}`;
+      const filePath = `team/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("media")
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("media")
+        .getPublicUrl(filePath);
+
+      const updated = [...teamMembers];
+      updated[index].image_url = publicUrl;
+      setTeamMembers(updated);
+
+      toast({
+        title: "Success",
+        description: "Image uploaded successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploadingImage(null);
+    }
+  };
+
+  const saveTeamMembers = async () => {
+    setLoading(true);
+    try {
+      // Delete existing members
+      await supabase.from("team_members").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+
+      // Insert new members
+      const membersToInsert = teamMembers.filter(m => m.name && m.title);
+      if (membersToInsert.length > 0) {
+        await supabase.from("team_members").insert(membersToInsert);
+      }
+
+      toast({ title: "Success", description: "Team members saved" });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+    setLoading(false);
+  };
+
+  const saveTimeline = async () => {
+    setLoading(true);
+    try {
+      // Delete existing events
+      await supabase.from("timeline_events").delete().neq("id", "00000000-0000-0000-0000-000000000000");
+
+      // Insert new events
+      const eventsToInsert = timeline.filter(e => e.year && e.title);
+      if (eventsToInsert.length > 0) {
+        await supabase.from("timeline_events").insert(eventsToInsert);
+      }
+
+      toast({ title: "Success", description: "Timeline saved" });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="p-6 space-y-6 max-w-5xl">
       <h1 className="text-3xl font-bold text-[#2E8B57]">Manage About Page</h1>
@@ -102,9 +196,39 @@ const AdminAbout = () => {
         <CardContent className="space-y-4">
           {teamMembers.map((member, idx) => (
             <div key={idx} className="border p-4 rounded-lg space-y-3">
+              <div className="flex items-center gap-4">
+                <Avatar className="w-20 h-20">
+                  <AvatarImage src={member.image_url} alt={member.name} />
+                  <AvatarFallback>
+                    <ImageIcon className="w-8 h-8" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <input
+                    ref={(el) => (imageInputRefs.current[idx] = el)}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleImageUpload(idx, file);
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => imageInputRefs.current[idx]?.click()}
+                    disabled={uploadingImage === `member-${idx}`}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    {uploadingImage === `member-${idx}` ? "Uploading..." : "Upload Photo"}
+                  </Button>
+                </div>
+              </div>
               <Input
                 placeholder="Name"
-                value={member.name}
+                value={member.name || ""}
                 onChange={(e) => {
                   const updated = [...teamMembers];
                   updated[idx].name = e.target.value;
@@ -113,7 +237,7 @@ const AdminAbout = () => {
               />
               <Input
                 placeholder="Title"
-                value={member.title}
+                value={member.title || ""}
                 onChange={(e) => {
                   const updated = [...teamMembers];
                   updated[idx].title = e.target.value;
@@ -122,7 +246,7 @@ const AdminAbout = () => {
               />
               <Input
                 placeholder="Expertise"
-                value={member.expertise}
+                value={member.expertise || ""}
                 onChange={(e) => {
                   const updated = [...teamMembers];
                   updated[idx].expertise = e.target.value;
@@ -131,6 +255,10 @@ const AdminAbout = () => {
               />
             </div>
           ))}
+          <Button onClick={saveTeamMembers} disabled={loading} className="w-full bg-[#2E8B57]">
+            <Save className="h-4 w-4 mr-2" />
+            Save Team Members
+          </Button>
         </CardContent>
       </Card>
 
@@ -174,6 +302,10 @@ const AdminAbout = () => {
               />
             </div>
           ))}
+          <Button onClick={saveTimeline} disabled={loading} className="w-full bg-[#2E8B57]">
+            <Save className="h-4 w-4 mr-2" />
+            Save Timeline
+          </Button>
         </CardContent>
       </Card>
     </div>

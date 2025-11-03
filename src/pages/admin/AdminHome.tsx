@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Save, Plus, Trash2 } from "lucide-react";
+import { Save, Plus, Trash2, Upload, Video } from "lucide-react";
 
 const AdminHome = () => {
   const { toast } = useToast();
@@ -19,6 +19,8 @@ const AdminHome = () => {
   });
   const [metrics, setMetrics] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadContent();
@@ -101,6 +103,52 @@ const AdminHome = () => {
     });
   };
 
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("video/")) {
+      toast({
+        title: "Error",
+        description: "Please upload a video file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `hero-video-${Date.now()}.${fileExt}`;
+      const filePath = `videos/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("media")
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("media")
+        .getPublicUrl(filePath);
+
+      setHomeContent({ ...homeContent, hero_video_url: publicUrl });
+      
+      toast({
+        title: "Success",
+        description: "Video uploaded successfully",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <div className="p-6 space-y-6 max-w-5xl">
       <div>
@@ -148,12 +196,36 @@ const AdminHome = () => {
             </div>
           </div>
           <div>
-            <Label>Hero Video URL</Label>
-            <Input
-              value={homeContent.hero_video_url}
-              onChange={(e) => setHomeContent({ ...homeContent, hero_video_url: e.target.value })}
-              placeholder="https://..."
-            />
+            <Label>Hero Video</Label>
+            <div className="flex gap-2">
+              <Input
+                value={homeContent.hero_video_url || ""}
+                onChange={(e) => setHomeContent({ ...homeContent, hero_video_url: e.target.value })}
+                placeholder="Enter URL or upload video"
+              />
+              <input
+                ref={videoInputRef}
+                type="file"
+                accept="video/*"
+                className="hidden"
+                onChange={handleVideoUpload}
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => videoInputRef.current?.click()}
+                disabled={uploading}
+              >
+                <Upload className="h-4 w-4 mr-2" />
+                {uploading ? "Uploading..." : "Upload"}
+              </Button>
+            </div>
+            {homeContent.hero_video_url && (
+              <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
+                <Video className="h-4 w-4" />
+                <span className="truncate">{homeContent.hero_video_url}</span>
+              </div>
+            )}
           </div>
           <Button onClick={saveContent} disabled={loading} className="bg-[#2E8B57] hover:bg-[#2E8B57]/90">
             <Save className="h-4 w-4 mr-2" />
