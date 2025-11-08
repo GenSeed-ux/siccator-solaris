@@ -7,7 +7,7 @@ import { TemperatureHumidity } from "@/components/dashboard/sensors/TemperatureH
 import { LightSensor } from "@/components/dashboard/sensors/LightSensor";
 import { GasSensor } from "@/components/dashboard/sensors/GasSensor";
 import { MoistureSensor } from "@/components/dashboard/sensors/MoistureSensor";
-import { ControlPanel } from "@/components/dashboard/controls/ControlPanel";
+import { DryingTimeline } from "@/components/dashboard/DryingTimeline";
 import { PowerModeIndicator } from "@/components/dashboard/PowerModeIndicator";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle } from "lucide-react";
@@ -20,20 +20,13 @@ const Dashboard = () => {
     status,
     config,
     sensorData,
-    fanSpeed,
     powerMode,
-    startSession,
-    pauseSession,
-    stopSession,
-    updateConfig,
-    setFanSpeed,
   } = useDryingSession();
 
   const { toast } = useToast();
 
   const handleVOCThresholdExceeded = () => {
     if (config.mode === "auto") {
-      setFanSpeed(100);
       toast({
         title: "Auto-activation",
         description: "VOC levels high! Fan set to maximum speed.",
@@ -104,29 +97,15 @@ const Dashboard = () => {
 
           {/* Main Content */}
           <div className="p-6 space-y-6">
-            {/* Control Panel */}
+            {/* Drying Timeline */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <ControlPanel
+              <DryingTimeline
                 status={status}
-                mode={config.mode}
-                targetTemp={config.targetTemp}
+                moistureLevel={sensorData.moistureLevel}
                 cropType={config.cropType}
-                fanSpeed={fanSpeed}
-                onStart={startSession}
-                onPause={pauseSession}
-                onStop={stopSession}
-                onTempChange={(temp) => updateConfig({ targetTemp: temp })}
-                onCropChange={(crop) => updateConfig({ cropType: crop })}
-                onModeToggle={() => 
-                  updateConfig({ mode: config.mode === "auto" ? "manual" : "auto" })
-                }
-                onFanControl={setFanSpeed}
-                onAlertReset={() => 
-                  toast({ title: "Alerts cleared", description: "All alerts have been reset" })
-                }
               />
             </motion.div>
 
@@ -234,7 +213,7 @@ const Dashboard = () => {
                 <p className="text-sm text-foreground">
                   <strong>Live Sensor Monitoring:</strong> All sensor data updates every 3 seconds. 
                   The system automatically optimizes drying parameters based on real-time conditions.
-                  {status === "idle" && " Click 'Start' in the control panel to begin a drying session."}
+                  {status === "idle" && " Go to Controls tab to begin a drying session."}
                 </p>
               </div>
             </motion.div>

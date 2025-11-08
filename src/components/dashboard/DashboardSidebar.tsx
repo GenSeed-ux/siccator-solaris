@@ -8,6 +8,7 @@ import {
   History,
   Sun,
   LogOut,
+  Sliders,
 } from "lucide-react";
 import {
   Sidebar,
@@ -29,6 +30,11 @@ const menuItems = [
     title: "Overview",
     url: "/dashboard",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Controls",
+    url: "/dashboard/controls",
+    icon: Sliders,
   },
   {
     title: "Analytics",

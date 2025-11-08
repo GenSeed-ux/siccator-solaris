@@ -17,6 +17,7 @@ import DashboardAnalytics from "./pages/dashboard/Analytics";
 import DashboardHistory from "./pages/dashboard/History";
 import DashboardAlerts from "./pages/dashboard/Alerts";
 import DashboardSettings from "./pages/dashboard/Settings";
+import DashboardControls from "./pages/dashboard/Controls";
 import NotFound from "./pages/NotFound";
 import { AdminAuthProvider } from "./contexts/AdminAuthContext";
 import { ProtectedRoute } from "./components/admin/ProtectedRoute";
@@ -54,6 +55,7 @@ const App = () => (
             {/* Pages without Layout */}
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/controls" element={<DashboardControls />} />
             <Route path="/dashboard/analytics" element={<DashboardAnalytics />} />
             <Route path="/dashboard/history" element={<DashboardHistory />} />
             <Route path="/dashboard/alerts" element={<DashboardAlerts />} />
