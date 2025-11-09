@@ -29,7 +29,7 @@ export function useDryingSession() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [status, setStatus] = useState<"idle" | "active" | "paused" | "completed">("idle");
   const [config, setConfig] = useState<SessionConfig>({
-    cropType: "Tomatoes",
+    cropType: "",
     targetTemp: 45,
     mode: "auto",
   });

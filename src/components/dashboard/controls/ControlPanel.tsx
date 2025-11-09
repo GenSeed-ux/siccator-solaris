@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { Switch } from "@/components/ui/switch";
 import { Play, Pause, Square, Fan, RefreshCw, Bell } from "lucide-react";
 import { useState } from "react";
@@ -88,24 +88,16 @@ export function ControlPanel({
           </p>
         </div>
 
-        {/* Crop Type Selector */}
+        {/* Crop Type Input */}
         <div className="space-y-2">
           <Label htmlFor="crop-type">Agricultural Produce Type</Label>
-          <Select value={cropType} onValueChange={onCropChange}>
-            <SelectTrigger id="crop-type">
-              <SelectValue placeholder="Select crop type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="Maize">🌽 Maize</SelectItem>
-              <SelectItem value="Pepper">🌶️ Pepper</SelectItem>
-              <SelectItem value="Fish">🐟 Fish</SelectItem>
-              <SelectItem value="Cassava">🥔 Cassava</SelectItem>
-              <SelectItem value="Cocoa">🍫 Cocoa</SelectItem>
-              <SelectItem value="Tomatoes">🍅 Tomatoes</SelectItem>
-              <SelectItem value="Mango">🥭 Mango</SelectItem>
-              <SelectItem value="Banana">🍌 Banana</SelectItem>
-            </SelectContent>
-          </Select>
+          <Input
+            id="crop-type"
+            type="text"
+            placeholder="Enter your produce type (e.g., Maize, Pepper, Fish)"
+            value={cropType}
+            onChange={(e) => onCropChange(e.target.value)}
+          />
         </div>
 
         {/* Drying Controls */}
