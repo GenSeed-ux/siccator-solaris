@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import logo from "@/assets/logo.png";
+import { SolarDryerLogo } from "@/components/SolarDryerLogo";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,8 +27,8 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16 gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <img src={logo} alt="Siccator Solaris" className="w-10 h-10 transition-transform group-hover:scale-110" />
+          <Link to="/" className="flex items-center space-x-3 group">
+            <SolarDryerLogo size="sm" variant="full" />
             <div className="hidden sm:block">
               <div className="text-lg font-bold text-foreground">Siccator Solaris</div>
               <div className="text-xs text-muted-foreground">Smart Agriculture</div>

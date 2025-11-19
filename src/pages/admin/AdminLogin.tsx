@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Leaf } from "lucide-react";
+import { SolarDryerLogo } from "@/components/SolarDryerLogo";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -44,7 +44,7 @@ const AdminLogin = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
-            <Leaf className="h-12 w-12 text-[#2E8B57]" />
+            <SolarDryerLogo size="lg" variant="full" />
           </div>
           <CardTitle className="text-2xl text-center">Admin Portal</CardTitle>
           <CardDescription className="text-center">

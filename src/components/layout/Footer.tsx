@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Leaf, Facebook, Twitter, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { Facebook, Twitter, Linkedin, Mail, MapPin, Phone } from "lucide-react";
+import { SolarDryerLogo } from "@/components/SolarDryerLogo";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -10,10 +11,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <Leaf className="w-6 h-6 text-primary-foreground" />
-              </div>
+            <div className="flex items-center space-x-3">
+              <SolarDryerLogo size="sm" variant="icon" />
               <div>
                 <div className="text-lg font-bold">Siccator Solaris</div>
                 <div className="text-xs opacity-80">Smart Agriculture</div>

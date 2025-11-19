@@ -16,6 +16,7 @@ import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { SolarDryerLogo } from "@/components/SolarDryerLogo";
 
 const menuItems = [
   { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
@@ -41,11 +42,19 @@ export const AdminSidebar = () => {
       )}
     >
       <div className="p-4 border-b flex items-center justify-between">
-        {!collapsed && <h2 className="font-semibold text-lg text-[#2E8B57]">Admin Panel</h2>}
+        {!collapsed ? (
+          <div className="flex items-center gap-2">
+            <SolarDryerLogo size={32} variant="icon" />
+            <h2 className="font-semibold text-lg text-primary">Admin Panel</h2>
+          </div>
+        ) : (
+          <SolarDryerLogo size={32} variant="icon" />
+        )}
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setCollapsed(!collapsed)}
+          className="ml-auto"
         >
           <Menu className="h-5 w-5" />
         </Button>
