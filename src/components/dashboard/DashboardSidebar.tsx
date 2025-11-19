@@ -6,7 +6,6 @@ import {
   Settings,
   Bell,
   History,
-  Sun,
   LogOut,
   Sliders,
 } from "lucide-react";
@@ -24,6 +23,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { SolarDryerLogo } from "@/components/SolarDryerLogo";
 
 const menuItems = [
   {
@@ -68,12 +68,10 @@ export function DashboardSidebar() {
     <Sidebar collapsible="icon" className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border p-4">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center shadow-glow">
-            <Sun className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <SolarDryerLogo size={40} variant="icon" />
           {open && (
             <div className="flex flex-col">
-              <span className="font-semibold text-sidebar-foreground">Siccator</span>
+              <span className="font-semibold text-sidebar-foreground">Siccator Solaris</span>
               <span className="text-xs text-sidebar-foreground/60">Solar Dryer</span>
             </div>
           )}

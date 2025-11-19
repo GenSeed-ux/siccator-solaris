@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Leaf, Lock, Smartphone } from "lucide-react";
+import { Lock, Smartphone } from "lucide-react";
 import { toast } from "sonner";
+import { SolarDryerLogo } from "@/components/SolarDryerLogo";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -40,8 +41,8 @@ const Login = () => {
       >
         {/* Logo & Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl gradient-primary mb-4 shadow-glow">
-            <Leaf className="w-10 h-10 text-primary-foreground" />
+          <div className="inline-flex items-center justify-center mb-4">
+            <SolarDryerLogo size="lg" variant="full" />
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-2">Farmer Portal</h1>
           <p className="text-muted-foreground">Access your Siccator Solaris monitoring dashboard</p>
