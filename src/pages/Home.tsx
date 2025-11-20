@@ -66,9 +66,26 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Video Overlay */}
-        <div className="absolute inset-0 bg-gradient-hero z-10" />
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80')] bg-cover bg-center" />
+        {/* Background Video or Image */}
+        {content?.hero_video_url ? (
+          <>
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={content.hero_video_url} type="video/mp4" />
+            </video>
+            <div className="absolute inset-0 bg-gradient-hero z-10" />
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-0 bg-gradient-hero z-10" />
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80')] bg-cover bg-center" />
+          </>
+        )}
         
         {/* Content */}
         <div className="relative z-20 text-center px-4 sm:px-6 lg:px-8 max-w-5xl">
