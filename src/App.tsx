@@ -10,6 +10,7 @@ import Technology from "./pages/Technology";
 import Applications from "./pages/Applications";
 import Impact from "./pages/Impact";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -50,6 +51,7 @@ const App = () => (
             <Route path="/applications" element={<Layout><Applications /></Layout>} />
             <Route path="/impact" element={<Layout><Impact /></Layout>} />
             <Route path="/blog" element={<Layout><Blog /></Layout>} />
+            <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             
             {/* Pages without Layout */}

@@ -14,6 +14,7 @@ const Blog = () => {
       if (data) {
         setArticles(data.map(post => ({
           id: post.id,
+          slug: post.slug,
           title: post.title,
           excerpt: post.summary,
           image: post.featured_image_url || "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80",
@@ -183,7 +184,7 @@ const Blog = () => {
                     </div>
 
                     {/* Read More */}
-                    <Link to={`/blog/${article.id}`} className="mt-4">
+                    <Link to={`/blog/${article.slug || article.id}`} className="mt-4">
                       <Button variant="ghost" className="w-full group/button">
                         Read Full Article
                         <ArrowRight className="ml-2 w-4 h-4 group-hover/button:translate-x-1 transition-transform" />
