@@ -94,6 +94,17 @@ const AdminHome = () => {
     }
   };
 
+  const updateMetric = async (metric: any) => {
+    await supabase
+      .from("impact_metrics")
+      .update({
+        metric_label: metric.metric_label,
+        metric_value: metric.metric_value,
+        metric_unit: metric.metric_unit,
+      })
+      .eq("id", metric.id);
+  };
+
   const deleteMetric = async (id: string) => {
     await supabase.from("impact_metrics").delete().eq("id", id);
     setMetrics(metrics.filter((m) => m.id !== id));
@@ -101,6 +112,20 @@ const AdminHome = () => {
       title: "Success",
       description: "Metric deleted",
     });
+  };
+
+  const saveAllMetrics = async () => {
+    setLoading(true);
+    for (const metric of metrics) {
+      if (metric.id) {
+        await updateMetric(metric);
+      }
+    }
+    toast({
+      title: "Success",
+      description: "All metrics saved successfully",
+    });
+    setLoading(false);
   };
 
   const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -289,6 +314,10 @@ const AdminHome = () => {
               </Button>
             </div>
           ))}
+          <Button onClick={saveAllMetrics} disabled={loading} className="w-full bg-[#2E8B57]">
+            <Save className="h-4 w-4 mr-2" />
+            Save All Metrics
+          </Button>
         </CardContent>
       </Card>
     </div>
