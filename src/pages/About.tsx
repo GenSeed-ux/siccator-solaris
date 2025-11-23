@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Target, Eye, Award, Users, Linkedin, Mail, MessageSquare, Github } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { FaXTwitter } from "react-icons/fa6";
+import { XTwitterIcon } from "@/components/icons/XTwitterIcon";
 
 const About = () => {
   const [content, setContent] = useState<any>(null);
@@ -179,7 +179,7 @@ const About = () => {
                         )}
                         {member.twitter_url && (
                           <a href={member.twitter_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                            <FaXTwitter className="h-5 w-5" />
+                            <XTwitterIcon className="h-5 w-5" />
                           </a>
                         )}
                         {member.github_url && (
