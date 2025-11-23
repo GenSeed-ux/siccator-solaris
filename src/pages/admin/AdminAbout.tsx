@@ -51,7 +51,18 @@ const AdminAbout = () => {
   const addTeamMember = () => {
     setTeamMembers([
       ...teamMembers,
-      { name: "", title: "", expertise: "", display_order: teamMembers.length },
+      { 
+        name: "", 
+        title: "", 
+        bio: "",
+        expertise: "", 
+        linkedin_url: "",
+        email: "",
+        discord_username: "",
+        twitter_url: "",
+        github_url: "",
+        display_order: teamMembers.length 
+      },
     ]);
   };
 
@@ -244,6 +255,16 @@ const AdminAbout = () => {
                   setTeamMembers(updated);
                 }}
               />
+              <Textarea
+                placeholder="Bio"
+                value={member.bio || ""}
+                onChange={(e) => {
+                  const updated = [...teamMembers];
+                  updated[idx].bio = e.target.value;
+                  setTeamMembers(updated);
+                }}
+                rows={3}
+              />
               <Input
                 placeholder="Expertise"
                 value={member.expertise || ""}
@@ -253,6 +274,55 @@ const AdminAbout = () => {
                   setTeamMembers(updated);
                 }}
               />
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground">Social Media (Optional)</Label>
+                <Input
+                  placeholder="LinkedIn URL (e.g., https://linkedin.com/in/username)"
+                  value={member.linkedin_url || ""}
+                  onChange={(e) => {
+                    const updated = [...teamMembers];
+                    updated[idx].linkedin_url = e.target.value;
+                    setTeamMembers(updated);
+                  }}
+                />
+                <Input
+                  placeholder="Email Address"
+                  type="email"
+                  value={member.email || ""}
+                  onChange={(e) => {
+                    const updated = [...teamMembers];
+                    updated[idx].email = e.target.value;
+                    setTeamMembers(updated);
+                  }}
+                />
+                <Input
+                  placeholder="Discord Username (e.g., username#1234)"
+                  value={member.discord_username || ""}
+                  onChange={(e) => {
+                    const updated = [...teamMembers];
+                    updated[idx].discord_username = e.target.value;
+                    setTeamMembers(updated);
+                  }}
+                />
+                <Input
+                  placeholder="X/Twitter URL (e.g., https://x.com/username)"
+                  value={member.twitter_url || ""}
+                  onChange={(e) => {
+                    const updated = [...teamMembers];
+                    updated[idx].twitter_url = e.target.value;
+                    setTeamMembers(updated);
+                  }}
+                />
+                <Input
+                  placeholder="GitHub URL (e.g., https://github.com/username)"
+                  value={member.github_url || ""}
+                  onChange={(e) => {
+                    const updated = [...teamMembers];
+                    updated[idx].github_url = e.target.value;
+                    setTeamMembers(updated);
+                  }}
+                />
+              </div>
             </div>
           ))}
           <Button onClick={saveTeamMembers} disabled={loading} className="w-full bg-[#2E8B57]">
