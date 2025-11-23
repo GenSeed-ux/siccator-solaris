@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Target, Eye, Award, Users } from "lucide-react";
+import { Target, Eye, Award, Users, Linkedin, Mail, MessageSquare, Github } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { FaXTwitter } from "react-icons/fa6";
 
 const About = () => {
   const [content, setContent] = useState<any>(null);
@@ -157,7 +158,37 @@ const About = () => {
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
                     <div className="text-primary font-medium mb-2">{member.title}</div>
-                    <p className="text-sm text-muted-foreground">{member.expertise}</p>
+                    {member.bio && <p className="text-sm text-muted-foreground mb-2">{member.bio}</p>}
+                    <p className="text-sm text-muted-foreground mb-3">{member.expertise}</p>
+                    {(member.linkedin_url || member.email || member.discord_username || member.twitter_url || member.github_url) && (
+                      <div className="flex gap-3 mt-4 pt-3 border-t">
+                        {member.linkedin_url && (
+                          <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                            <Linkedin className="h-5 w-5" />
+                          </a>
+                        )}
+                        {member.email && (
+                          <a href={`mailto:${member.email}`} className="text-muted-foreground hover:text-primary transition-colors">
+                            <Mail className="h-5 w-5" />
+                          </a>
+                        )}
+                        {member.discord_username && (
+                          <span className="text-muted-foreground hover:text-primary transition-colors cursor-pointer" title={member.discord_username}>
+                            <MessageSquare className="h-5 w-5" />
+                          </span>
+                        )}
+                        {member.twitter_url && (
+                          <a href={member.twitter_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                            <FaXTwitter className="h-5 w-5" />
+                          </a>
+                        )}
+                        {member.github_url && (
+                          <a href={member.github_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                            <Github className="h-5 w-5" />
+                          </a>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </motion.div>
