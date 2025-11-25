@@ -161,32 +161,65 @@ const About = () => {
                     {member.bio && <p className="text-sm text-muted-foreground mb-2">{member.bio}</p>}
                     <p className="text-sm text-muted-foreground mb-3">{member.expertise}</p>
                     {(member.linkedin_url || member.email || member.discord_username || member.twitter_url || member.github_url) && (
-                      <div className="flex gap-3 mt-4 pt-3 border-t">
-                        {member.linkedin_url && (
-                          <a href={member.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                            <Linkedin className="h-5 w-5" />
-                          </a>
-                        )}
-                        {member.email && (
-                          <a href={`mailto:${member.email}`} className="text-muted-foreground hover:text-primary transition-colors">
-                            <Mail className="h-5 w-5" />
-                          </a>
-                        )}
-                        {member.discord_username && (
-                          <span className="text-muted-foreground hover:text-primary transition-colors cursor-pointer" title={member.discord_username}>
-                            <MessageSquare className="h-5 w-5" />
-                          </span>
-                        )}
-                        {member.twitter_url && (
-                          <a href={member.twitter_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                            <XTwitterIcon className="h-5 w-5" />
-                          </a>
-                        )}
-                        {member.github_url && (
-                          <a href={member.github_url} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                            <Github className="h-5 w-5" />
-                          </a>
-                        )}
+                      <div className="mt-4 pt-4 border-t border-border/50 space-y-2">
+                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Connect</p>
+                        <div className="flex flex-wrap gap-2">
+                          {member.linkedin_url && (
+                            <a 
+                              href={member.linkedin_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
+                              title="LinkedIn"
+                            >
+                              <Linkedin className="h-4 w-4" />
+                              <span className="text-xs font-medium">LinkedIn</span>
+                            </a>
+                          )}
+                          {member.email && (
+                            <a 
+                              href={`mailto:${member.email}`} 
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
+                              title={member.email}
+                            >
+                              <Mail className="h-4 w-4" />
+                              <span className="text-xs font-medium">Email</span>
+                            </a>
+                          )}
+                          {member.discord_username && (
+                            <div 
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 text-muted-foreground cursor-default"
+                              title={member.discord_username}
+                            >
+                              <MessageSquare className="h-4 w-4" />
+                              <span className="text-xs font-medium">{member.discord_username}</span>
+                            </div>
+                          )}
+                          {member.twitter_url && (
+                            <a 
+                              href={member.twitter_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
+                              title="X (Twitter)"
+                            >
+                              <XTwitterIcon className="h-4 w-4" />
+                              <span className="text-xs font-medium">X</span>
+                            </a>
+                          )}
+                          {member.github_url && (
+                            <a 
+                              href={member.github_url} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
+                              title="GitHub"
+                            >
+                              <Github className="h-4 w-4" />
+                              <span className="text-xs font-medium">GitHub</span>
+                            </a>
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>
