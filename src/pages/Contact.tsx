@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import PartnershipDialog from "@/components/PartnershipDialog";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -65,24 +66,6 @@ const Contact = () => {
       icon: Mail,
       title: "Email Us",
       details: ["info@siccatorsolaris.org", "support@siccatorsolaris.org"],
-    },
-  ];
-
-  const partnerTypes = [
-    {
-      title: "For Farmers",
-      description: "Request a pilot program or get more information about our smart solar dryers",
-      cta: "Request Pilot",
-    },
-    {
-      title: "For NGOs & Governments",
-      description: "Partner with us to deploy sustainable agricultural technology at scale",
-      cta: "Partner With Us",
-    },
-    {
-      title: "For Investors",
-      description: "Join us in building a sustainable agricultural future across Africa",
-      cta: "Investment Inquiry",
     },
   ];
 
@@ -225,18 +208,26 @@ const Contact = () => {
                 </p>
               </div>
 
-              {partnerTypes.map((partner, index) => (
-                <div
-                  key={index}
-                  className="bg-card rounded-xl p-6 border-2 border-border hover:border-primary hover:shadow-glow transition-all"
-                >
-                  <h3 className="text-xl font-bold text-foreground mb-2">{partner.title}</h3>
-                  <p className="text-muted-foreground mb-4">{partner.description}</p>
-                  <Button variant="outline" className="w-full">
-                    {partner.cta}
-                  </Button>
-                </div>
-              ))}
+              {/* For Farmers */}
+              <div className="bg-card rounded-xl p-6 border-2 border-border hover:border-primary hover:shadow-glow transition-all">
+                <h3 className="text-xl font-bold text-foreground mb-2">For Farmers</h3>
+                <p className="text-muted-foreground mb-4">Request a pilot program or get more information about our smart solar dryers</p>
+                <PartnershipDialog type="farmer" triggerText="Request Pilot" />
+              </div>
+
+              {/* For NGOs & Governments */}
+              <div className="bg-card rounded-xl p-6 border-2 border-border hover:border-primary hover:shadow-glow transition-all">
+                <h3 className="text-xl font-bold text-foreground mb-2">For NGOs & Governments</h3>
+                <p className="text-muted-foreground mb-4">Partner with us to deploy sustainable agricultural technology at scale</p>
+                <PartnershipDialog type="ngo_government" triggerText="Partner With Us" />
+              </div>
+
+              {/* For Investors */}
+              <div className="bg-card rounded-xl p-6 border-2 border-border hover:border-primary hover:shadow-glow transition-all">
+                <h3 className="text-xl font-bold text-foreground mb-2">For Investors</h3>
+                <p className="text-muted-foreground mb-4">Join us in building a sustainable agricultural future across Africa</p>
+                <PartnershipDialog type="investor" triggerText="Investment Inquiry" />
+              </div>
 
               {/* Map Placeholder */}
               <div className="bg-muted rounded-xl p-8 text-center">

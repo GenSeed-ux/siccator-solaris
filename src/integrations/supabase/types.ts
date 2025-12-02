@@ -242,6 +242,51 @@ export type Database = {
         }
         Relationships: []
       }
+      gallery_media: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string | null
+          display_order: number | null
+          id: string
+          is_featured: boolean | null
+          location: string | null
+          media_type: string
+          media_url: string
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_featured?: boolean | null
+          location?: string | null
+          media_type?: string
+          media_url: string
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_featured?: boolean | null
+          location?: string | null
+          media_type?: string
+          media_url?: string
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       home_content: {
         Row: {
           created_at: string
@@ -307,6 +352,78 @@ export type Database = {
           metric_label?: string
           metric_unit?: string | null
           metric_value?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      partnership_inquiries: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          crop_types: string[] | null
+          current_drying_method: string | null
+          email: string
+          estimated_beneficiaries: number | null
+          farm_size: string | null
+          full_name: string
+          id: string
+          inquiry_type: string
+          investment_range: string | null
+          investment_type: string | null
+          location: string | null
+          message: string | null
+          organization: string | null
+          organization_type: string | null
+          phone: string | null
+          portfolio_focus: string | null
+          status: string
+          target_region: string | null
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          crop_types?: string[] | null
+          current_drying_method?: string | null
+          email: string
+          estimated_beneficiaries?: number | null
+          farm_size?: string | null
+          full_name: string
+          id?: string
+          inquiry_type: string
+          investment_range?: string | null
+          investment_type?: string | null
+          location?: string | null
+          message?: string | null
+          organization?: string | null
+          organization_type?: string | null
+          phone?: string | null
+          portfolio_focus?: string | null
+          status?: string
+          target_region?: string | null
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          crop_types?: string[] | null
+          current_drying_method?: string | null
+          email?: string
+          estimated_beneficiaries?: number | null
+          farm_size?: string | null
+          full_name?: string
+          id?: string
+          inquiry_type?: string
+          investment_range?: string | null
+          investment_type?: string | null
+          location?: string | null
+          message?: string | null
+          organization?: string | null
+          organization_type?: string | null
+          phone?: string | null
+          portfolio_focus?: string | null
+          status?: string
+          target_region?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -467,6 +584,72 @@ export type Database = {
           quote?: string
           role?: string | null
           type?: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Relationships: []
+      }
+      success_stories: {
+        Row: {
+          challenge: string | null
+          created_at: string
+          crop_types: string[] | null
+          display_order: number | null
+          farm_size: string | null
+          farmer_name: string
+          id: string
+          image_url: string | null
+          income_increase_percentage: number | null
+          is_featured: boolean | null
+          location: string
+          loss_reduction_percentage: number | null
+          quote: string | null
+          results: string | null
+          solution: string | null
+          story_content: string
+          story_title: string
+          updated_at: string
+          video_url: string | null
+        }
+        Insert: {
+          challenge?: string | null
+          created_at?: string
+          crop_types?: string[] | null
+          display_order?: number | null
+          farm_size?: string | null
+          farmer_name: string
+          id?: string
+          image_url?: string | null
+          income_increase_percentage?: number | null
+          is_featured?: boolean | null
+          location: string
+          loss_reduction_percentage?: number | null
+          quote?: string | null
+          results?: string | null
+          solution?: string | null
+          story_content: string
+          story_title: string
+          updated_at?: string
+          video_url?: string | null
+        }
+        Update: {
+          challenge?: string | null
+          created_at?: string
+          crop_types?: string[] | null
+          display_order?: number | null
+          farm_size?: string | null
+          farmer_name?: string
+          id?: string
+          image_url?: string | null
+          income_increase_percentage?: number | null
+          is_featured?: boolean | null
+          location?: string
+          loss_reduction_percentage?: number | null
+          quote?: string | null
+          results?: string | null
+          solution?: string | null
+          story_content?: string
+          story_title?: string
           updated_at?: string
           video_url?: string | null
         }

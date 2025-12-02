@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
-import { Target, Eye, Award, Users, Linkedin, Mail, MessageSquare, Github } from "lucide-react";
+import { Target, Eye, Award, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { XTwitterIcon } from "@/components/icons/XTwitterIcon";
+import TeamMemberModal from "@/components/TeamMemberModal";
 
 const About = () => {
   const [content, setContent] = useState<any>(null);
   const [timeline, setTimeline] = useState<any[]>([]);
   const [team, setTeam] = useState<any[]>([]);
+  const [selectedMember, setSelectedMember] = useState<any | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -147,7 +148,8 @@ const About = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group"
+                className="group cursor-pointer"
+                onClick={() => setSelectedMember(member)}
               >
                 <div className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-glow transition-all duration-300 hover:-translate-y-2">
                   {member.image_url ? (
@@ -158,75 +160,20 @@ const About = () => {
                   <div className="p-6">
                     <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
                     <div className="text-primary font-medium mb-2">{member.title}</div>
-                    {member.bio && <p className="text-sm text-muted-foreground mb-2">{member.bio}</p>}
-                    <p className="text-sm text-muted-foreground mb-3">{member.expertise}</p>
-                    {(member.linkedin_url || member.email || member.discord_username || member.twitter_url || member.github_url) && (
-                      <div className="mt-4 pt-4 border-t border-border/50 space-y-2">
-                        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Connect</p>
-                        <div className="flex flex-wrap gap-2">
-                          {member.linkedin_url && (
-                            <a 
-                              href={member.linkedin_url} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
-                              title="LinkedIn"
-                            >
-                              <Linkedin className="h-4 w-4" />
-                              <span className="text-xs font-medium">LinkedIn</span>
-                            </a>
-                          )}
-                          {member.email && (
-                            <a 
-                              href={`mailto:${member.email}`} 
-                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
-                              title={member.email}
-                            >
-                              <Mail className="h-4 w-4" />
-                              <span className="text-xs font-medium">Email</span>
-                            </a>
-                          )}
-                          {member.discord_username && (
-                            <div 
-                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 text-muted-foreground cursor-default"
-                              title={member.discord_username}
-                            >
-                              <MessageSquare className="h-4 w-4" />
-                              <span className="text-xs font-medium">{member.discord_username}</span>
-                            </div>
-                          )}
-                          {member.twitter_url && (
-                            <a 
-                              href={member.twitter_url} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
-                              title="X (Twitter)"
-                            >
-                              <XTwitterIcon className="h-4 w-4" />
-                              <span className="text-xs font-medium">X</span>
-                            </a>
-                          )}
-                          {member.github_url && (
-                            <a 
-                              href={member.github_url} 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 hover:bg-primary/10 text-muted-foreground hover:text-primary transition-all group"
-                              title="GitHub"
-                            >
-                              <Github className="h-4 w-4" />
-                              <span className="text-xs font-medium">GitHub</span>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    )}
+                    <p className="text-sm text-muted-foreground line-clamp-2">{member.expertise}</p>
+                    <p className="text-xs text-primary mt-3 font-medium group-hover:underline">Click to view full profile →</p>
                   </div>
                 </div>
               </motion.div>
             ))}
           </div>
+
+          {/* Team Member Modal */}
+          <TeamMemberModal 
+            member={selectedMember} 
+            isOpen={!!selectedMember} 
+            onClose={() => setSelectedMember(null)} 
+          />
         </div>
       </section>
 
