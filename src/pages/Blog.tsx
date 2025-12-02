@@ -1,32 +1,88 @@
 import { motion } from "framer-motion";
-import { Calendar, User, ArrowRight } from "lucide-react";
+import { Calendar, User, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const Blog = () => {
   const [articles, setArticles] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [isSubscribing, setIsSubscribing] = useState(false);
 
   useEffect(() => {
     const loadArticles = async () => {
-      const { data } = await supabase.from("blog_posts").select("*").eq("is_published", true).order("published_at", { ascending: false });
-      if (data) {
-        setArticles(data.map(post => ({
-          id: post.id,
-          slug: post.slug,
-          title: post.title,
-          excerpt: post.summary,
-          image: post.featured_image_url || "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80",
-          category: post.category,
-          author: post.author,
-          date: new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-          readTime: `${post.read_time || 5} min read`
-        })));
+      setIsLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("blog_posts")
+          .select("*")
+          .eq("is_published", true)
+          .order("published_at", { ascending: false });
+        
+        if (error) throw error;
+        
+        if (data) {
+          setArticles(data.map(post => ({
+            id: post.id,
+            slug: post.slug,
+            title: post.title,
+            excerpt: post.summary,
+            image: post.featured_image_url || "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?auto=format&fit=crop&q=80",
+            category: post.category,
+            author: post.author,
+            date: new Date(post.published_at || post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+            readTime: `${post.read_time || 5} min read`
+          })));
+        }
+      } catch (error) {
+        console.error("Error loading articles:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     loadArticles();
   }, []);
+
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!newsletterEmail.trim()) {
+      toast.error("Please enter your email address");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newsletterEmail)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+
+    setIsSubscribing(true);
+    try {
+      const { error } = await supabase
+        .from("newsletter_subscribers" as any)
+        .insert({ email: newsletterEmail.trim().toLowerCase() });
+
+      if (error) {
+        if (error.code === "23505") {
+          toast.info("You're already subscribed to our newsletter!");
+        } else {
+          throw error;
+        }
+      } else {
+        toast.success("Successfully subscribed to our newsletter!");
+        setNewsletterEmail("");
+      }
+    } catch (error) {
+      console.error("Newsletter subscription error:", error);
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
 
   const fallbackArticles = [
     {
@@ -213,16 +269,31 @@ const Blog = () => {
             <p className="text-lg text-muted-foreground mb-8">
               Subscribe to our newsletter for the latest innovations, success stories, and agricultural insights
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 rounded-lg border-2 border-border focus:border-primary outline-none bg-background"
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                disabled={isSubscribing}
+                className="flex-1 px-4 py-3 rounded-lg border-2 border-border focus:border-primary outline-none bg-background disabled:opacity-50"
               />
-              <Button size="lg" className="gradient-primary text-primary-foreground">
-                Subscribe
+              <Button 
+                type="submit" 
+                size="lg" 
+                className="gradient-primary text-primary-foreground"
+                disabled={isSubscribing}
+              >
+                {isSubscribing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Subscribing...
+                  </>
+                ) : (
+                  "Subscribe"
+                )}
               </Button>
-            </div>
+            </form>
           </motion.div>
         </div>
       </section>
