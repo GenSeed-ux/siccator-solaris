@@ -35,6 +35,9 @@ import AdminSettings from "./pages/admin/AdminSettings";
 import AdminApplications from "./pages/admin/AdminApplications";
 import AdminTechnology from "./pages/admin/AdminTechnology";
 import AdminImpact from "./pages/admin/AdminImpact";
+import AdminGallery from "./pages/admin/AdminGallery";
+import AdminSuccessStories from "./pages/admin/AdminSuccessStories";
+import AdminPartnerships from "./pages/admin/AdminPartnerships";
 
 const queryClient = new QueryClient();
 
@@ -84,6 +87,9 @@ const App = () => (
               <Route path="applications" element={<AdminApplications />} />
               <Route path="impact" element={<AdminImpact />} />
               <Route path="blog" element={<AdminBlog />} />
+              <Route path="gallery" element={<AdminGallery />} />
+              <Route path="success-stories" element={<AdminSuccessStories />} />
+              <Route path="partnerships" element={<AdminPartnerships />} />
               <Route path="pilots" element={<AdminPilots />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
