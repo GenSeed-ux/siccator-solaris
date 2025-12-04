@@ -10,7 +10,10 @@ import {
   Users, 
   Settings,
   LogOut,
-  Menu
+  Menu,
+  Image,
+  Award,
+  Handshake
 } from "lucide-react";
 import { useAdminAuth } from "@/contexts/AdminAuthContext";
 import { Button } from "@/components/ui/button";
@@ -26,6 +29,9 @@ const menuItems = [
   { icon: Layers, label: "Applications", path: "/admin/applications" },
   { icon: TrendingUp, label: "Impact Data", path: "/admin/impact" },
   { icon: FileText, label: "Blog Posts", path: "/admin/blog" },
+  { icon: Image, label: "Gallery", path: "/admin/gallery" },
+  { icon: Award, label: "Success Stories", path: "/admin/success-stories" },
+  { icon: Handshake, label: "Partnerships", path: "/admin/partnerships" },
   { icon: Users, label: "Pilot Requests", path: "/admin/pilots" },
   { icon: Settings, label: "Settings", path: "/admin/settings" },
 ];
