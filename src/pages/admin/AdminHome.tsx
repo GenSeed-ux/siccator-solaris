@@ -222,33 +222,71 @@ const AdminHome = () => {
           </div>
           <div>
             <Label>Hero Video</Label>
-            <div className="flex gap-2">
-              <Input
-                value={homeContent.hero_video_url || ""}
-                onChange={(e) => setHomeContent({ ...homeContent, hero_video_url: e.target.value })}
-                placeholder="Enter URL or upload video"
-              />
-              <input
-                ref={videoInputRef}
-                type="file"
-                accept="video/*"
-                className="hidden"
-                onChange={handleVideoUpload}
-              />
-              <Button
-                type="button"
-                variant="outline"
+            <input
+              ref={videoInputRef}
+              type="file"
+              accept="video/*"
+              className="hidden"
+              onChange={handleVideoUpload}
+            />
+            
+            {homeContent.hero_video_url ? (
+              <div className="space-y-3">
+                <div className="relative rounded-lg overflow-hidden border bg-muted">
+                  <video 
+                    src={homeContent.hero_video_url} 
+                    className="w-full max-h-48 object-cover"
+                    controls
+                    muted
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 flex items-center gap-2 px-3 py-2 bg-muted rounded-md text-sm">
+                    <Video className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                    <span className="truncate text-muted-foreground">{homeContent.hero_video_url.split('/').pop()}</span>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => videoInputRef.current?.click()}
+                    disabled={uploading}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Replace
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={async () => {
+                      const confirmed = window.confirm("Are you sure you want to delete this video?");
+                      if (confirmed) {
+                        // Extract file path from URL for deletion
+                        const urlParts = homeContent.hero_video_url?.split('/media/');
+                        if (urlParts && urlParts[1]) {
+                          await supabase.storage.from("media").remove([urlParts[1]]);
+                        }
+                        setHomeContent({ ...homeContent, hero_video_url: "" });
+                        toast({
+                          title: "Success",
+                          description: "Video deleted successfully",
+                        });
+                      }
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div 
                 onClick={() => videoInputRef.current?.click()}
-                disabled={uploading}
+                className="border-2 border-dashed border-muted-foreground/25 rounded-lg p-8 text-center cursor-pointer hover:border-primary/50 hover:bg-muted/50 transition-colors"
               >
-                <Upload className="h-4 w-4 mr-2" />
-                {uploading ? "Uploading..." : "Upload"}
-              </Button>
-            </div>
-            {homeContent.hero_video_url && (
-              <div className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
-                <Video className="h-4 w-4" />
-                <span className="truncate">{homeContent.hero_video_url}</span>
+                <Video className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
+                <p className="text-sm font-medium text-foreground mb-1">
+                  {uploading ? "Uploading..." : "Click to upload hero video"}
+                </p>
+                <p className="text-xs text-muted-foreground">MP4, WebM, or MOV (max 50MB)</p>
               </div>
             )}
           </div>
