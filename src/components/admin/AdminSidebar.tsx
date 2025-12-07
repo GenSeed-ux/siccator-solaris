@@ -43,57 +43,64 @@ export const AdminSidebar = () => {
   return (
     <aside
       className={cn(
-        "bg-card border-r h-screen sticky top-0 transition-all duration-300",
+        "bg-card border-r h-screen sticky top-0 transition-all duration-300 flex flex-col",
         collapsed ? "w-16" : "w-64"
       )}
     >
-      <div className="p-4 border-b flex items-center justify-between">
-        {!collapsed ? (
-          <div className="flex items-center gap-2">
-            <SolarDryerLogo size={32} variant="icon" />
-            <h2 className="font-semibold text-lg text-primary">Admin Panel</h2>
+      {/* Header */}
+      <div className="p-4 border-b flex items-center gap-3">
+        <SolarDryerLogo size={32} variant="icon" className="flex-shrink-0" />
+        {!collapsed && (
+          <div className="flex-1 min-w-0">
+            <h2 className="font-semibold text-base text-primary truncate">Admin Panel</h2>
+            <p className="text-xs text-muted-foreground truncate">Solar Dryer CMS</p>
           </div>
-        ) : (
-          <SolarDryerLogo size={32} variant="icon" />
         )}
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setCollapsed(!collapsed)}
-          className="ml-auto"
+          className="flex-shrink-0 h-8 w-8"
         >
-          <Menu className="h-5 w-5" />
+          <Menu className="h-4 w-4" />
         </Button>
       </div>
       
-      <nav className="p-2 space-y-1">
+      {/* Navigation */}
+      <nav className="flex-1 overflow-y-auto p-2 space-y-1">
         {menuItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
+            title={collapsed ? item.label : undefined}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 px-3 py-2 rounded-md transition-colors",
+                "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200",
+                collapsed && "justify-center px-2",
                 isActive
-                  ? "bg-[#2E8B57] text-white"
-                  : "hover:bg-muted text-muted-foreground"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "hover:bg-muted text-muted-foreground hover:text-foreground"
               )
             }
           >
             <item.icon className="h-5 w-5 flex-shrink-0" />
-            {!collapsed && <span>{item.label}</span>}
+            {!collapsed && <span className="text-sm font-medium">{item.label}</span>}
           </NavLink>
         ))}
       </nav>
 
-      <div className="absolute bottom-4 left-0 right-0 px-2">
+      {/* Footer */}
+      <div className="border-t p-2">
         <Button
           variant="ghost"
-          className="w-full justify-start gap-3"
+          className={cn(
+            "w-full gap-3 text-muted-foreground hover:text-destructive hover:bg-destructive/10",
+            collapsed ? "justify-center px-2" : "justify-start"
+          )}
           onClick={signOut}
         >
           <LogOut className="h-5 w-5" />
-          {!collapsed && <span>Sign Out</span>}
+          {!collapsed && <span className="text-sm font-medium">Sign Out</span>}
         </Button>
       </div>
     </aside>
