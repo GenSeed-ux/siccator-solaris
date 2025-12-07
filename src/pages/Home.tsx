@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Leaf, Sun, TrendingUp, Users, Award, ArrowRight } from "lucide-react";
@@ -11,6 +11,8 @@ const Home = () => {
   const [content, setContent] = useState<any>(null);
   const [stats, setStats] = useState<any[]>([]);
   const [testimonials, setTestimonials] = useState<any[]>([]);
+  const [heroVideos, setHeroVideos] = useState<string[]>([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   useEffect(() => {
     const loadData = async () => {
@@ -20,7 +22,26 @@ const Home = () => {
         supabase.from("stories_testimonials").select("*").eq("type", "testimonial").eq("is_featured", true).order("display_order").limit(3),
       ]);
 
-      if (homeData.data) setContent(homeData.data);
+      if (homeData.data) {
+        setContent(homeData.data);
+        // Parse hero videos
+        if (homeData.data.hero_video_url) {
+          try {
+            const parsed = JSON.parse(homeData.data.hero_video_url);
+            if (Array.isArray(parsed)) {
+              setHeroVideos(parsed);
+            } else {
+              setHeroVideos([homeData.data.hero_video_url]);
+            }
+          } catch {
+            if (homeData.data.hero_video_url.includes(',')) {
+              setHeroVideos(homeData.data.hero_video_url.split(',').map((u: string) => u.trim()).filter(Boolean));
+            } else if (homeData.data.hero_video_url) {
+              setHeroVideos([homeData.data.hero_video_url]);
+            }
+          }
+        }
+      }
       if (metricsData.data) {
         setStats(metricsData.data.map(m => ({
           value: m.metric_value,
@@ -38,6 +59,15 @@ const Home = () => {
     };
     loadData();
   }, []);
+
+  // Auto-advance video slideshow
+  useEffect(() => {
+    if (heroVideos.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentVideoIndex((prev) => (prev + 1) % heroVideos.length);
+    }, 8000);
+    return () => clearInterval(interval);
+  }, [heroVideos.length]);
 
   const features = [
     {
@@ -66,19 +96,40 @@ const Home = () => {
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Video or Image */}
-        {content?.hero_video_url ? (
+        {/* Background Video Slideshow or Image */}
+        {heroVideos.length > 0 ? (
           <>
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            >
-              <source src={content.hero_video_url} type="video/mp4" />
-            </video>
+            {heroVideos.map((videoUrl, index) => (
+              <video
+                key={videoUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                  index === currentVideoIndex ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                <source src={videoUrl} type="video/mp4" />
+              </video>
+            ))}
             <div className="absolute inset-0 bg-gradient-hero z-10" />
+            
+            {/* Video Indicators */}
+            {heroVideos.length > 1 && (
+              <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+                {heroVideos.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentVideoIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentVideoIndex ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/70'
+                    }`}
+                    aria-label={`Go to video ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </>
         ) : (
           <>
