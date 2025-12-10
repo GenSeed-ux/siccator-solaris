@@ -23,28 +23,40 @@ const AdminAbout = () => {
   }, []);
 
   const loadContent = async () => {
-    const [about, team, timelineData] = await Promise.all([
-      supabase.from("about_content").select("*").single(),
-      supabase.from("team_members").select("*").order("display_order"),
-      supabase.from("timeline_events").select("*").order("display_order"),
-    ]);
+    try {
+      const [about, team, timelineData] = await Promise.all([
+        supabase.from("about_content").select("*").maybeSingle(),
+        supabase.from("team_members").select("*").order("display_order"),
+        supabase.from("timeline_events").select("*").order("display_order"),
+      ]);
 
-    if (about.data) setAboutContent(about.data);
-    if (team.data) setTeamMembers(team.data);
-    if (timelineData.data) setTimeline(timelineData.data);
+      if (about.data) setAboutContent(about.data);
+      if (team.data) setTeamMembers(team.data);
+      if (timelineData.data) setTimeline(timelineData.data);
+    } catch (error) {
+      console.error("Error loading admin about content:", error);
+    }
   };
 
   const saveAbout = async () => {
     setLoading(true);
-    const { data: existing } = await supabase.from("about_content").select("*").single();
+    try {
+      const { data: existing } = await supabase.from("about_content").select("*").maybeSingle();
 
-    if (existing) {
-      await supabase.from("about_content").update(aboutContent).eq("id", existing.id);
-    } else {
-      await supabase.from("about_content").insert([aboutContent]);
+      if (existing) {
+        await supabase.from("about_content").update(aboutContent).eq("id", existing.id);
+      } else {
+        await supabase.from("about_content").insert([aboutContent]);
+      }
+
+      toast({ title: "Success", description: "About content updated" });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to save content",
+        variant: "destructive",
+      });
     }
-
-    toast({ title: "Success", description: "About content updated" });
     setLoading(false);
   };
 

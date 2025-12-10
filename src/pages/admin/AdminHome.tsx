@@ -72,21 +72,31 @@ const AdminHome = () => {
   }, [heroVideos.length, isPlaying]);
 
   const loadContent = async () => {
-    const { data } = await supabase
-      .from("home_content")
-      .select("*")
-      .single();
-    
-    if (data) setHomeContent(data);
+    try {
+      const { data, error } = await supabase
+        .from("home_content")
+        .select("*")
+        .maybeSingle();
+      
+      if (error) throw error;
+      if (data) setHomeContent(data);
+    } catch (error) {
+      console.error("Error loading home content:", error);
+    }
   };
 
   const loadMetrics = async () => {
-    const { data } = await supabase
-      .from("impact_metrics")
-      .select("*")
-      .order("display_order");
-    
-    if (data) setMetrics(data);
+    try {
+      const { data, error } = await supabase
+        .from("impact_metrics")
+        .select("*")
+        .order("display_order");
+      
+      if (error) throw error;
+      if (data) setMetrics(data);
+    } catch (error) {
+      console.error("Error loading metrics:", error);
+    }
   };
 
   const saveContent = async () => {
