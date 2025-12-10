@@ -1,29 +1,122 @@
 import { motion } from "framer-motion";
-import { Target, Eye, Award, Users } from "lucide-react";
+import { Target, Eye, Award, Users, AlertCircle, RefreshCw, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import TeamMemberModal from "@/components/TeamMemberModal";
+import { TeamMemberSkeleton, TimelineSkeleton, ContentSkeleton } from "@/components/ui/skeleton-card";
+import { Button } from "@/components/ui/button";
+
+interface TeamMember {
+  id: string;
+  name: string;
+  title: string;
+  bio?: string;
+  expertise?: string;
+  image_url?: string;
+  linkedin_url?: string;
+  email?: string;
+  discord_username?: string;
+  twitter_url?: string;
+  github_url?: string;
+  display_order?: number;
+}
+
+interface TimelineEvent {
+  id: string;
+  year: string;
+  title: string;
+  description: string;
+  display_order?: number;
+}
+
+interface AboutContent {
+  id: string;
+  mission?: string;
+  vision?: string;
+}
 
 const About = () => {
-  const [content, setContent] = useState<any>(null);
-  const [timeline, setTimeline] = useState<any[]>([]);
-  const [team, setTeam] = useState<any[]>([]);
-  const [selectedMember, setSelectedMember] = useState<any | null>(null);
+  const [content, setContent] = useState<AboutContent | null>(null);
+  const [timeline, setTimeline] = useState<TimelineEvent[]>([]);
+  const [team, setTeam] = useState<TeamMember[]>([]);
+  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  
+  // Loading states
+  const [isLoadingContent, setIsLoadingContent] = useState(true);
+  const [isLoadingTimeline, setIsLoadingTimeline] = useState(true);
+  const [isLoadingTeam, setIsLoadingTeam] = useState(true);
+  
+  // Error states
+  const [contentError, setContentError] = useState<string | null>(null);
+  const [timelineError, setTimelineError] = useState<string | null>(null);
+  const [teamError, setTeamError] = useState<string | null>(null);
+
+  const loadContent = async () => {
+    setIsLoadingContent(true);
+    setContentError(null);
+    try {
+      const { data, error } = await supabase
+        .from("about_content")
+        .select("*")
+        .maybeSingle();
+      
+      if (error) throw error;
+      setContent(data);
+    } catch (err) {
+      console.error("Error loading about content:", err);
+      setContentError("Failed to load content");
+    } finally {
+      setIsLoadingContent(false);
+    }
+  };
+
+  const loadTimeline = async () => {
+    setIsLoadingTimeline(true);
+    setTimelineError(null);
+    try {
+      const { data, error } = await supabase
+        .from("timeline_events")
+        .select("*")
+        .order("display_order");
+      
+      if (error) throw error;
+      setTimeline(data || []);
+    } catch (err) {
+      console.error("Error loading timeline:", err);
+      setTimelineError("Failed to load timeline");
+    } finally {
+      setIsLoadingTimeline(false);
+    }
+  };
+
+  const loadTeam = async () => {
+    setIsLoadingTeam(true);
+    setTeamError(null);
+    try {
+      const { data, error } = await supabase
+        .from("team_members")
+        .select("*")
+        .order("display_order");
+      
+      if (error) throw error;
+      setTeam(data || []);
+    } catch (err) {
+      console.error("Error loading team:", err);
+      setTeamError("Failed to load team members");
+    } finally {
+      setIsLoadingTeam(false);
+    }
+  };
 
   useEffect(() => {
-    const loadData = async () => {
-      const [aboutData, timelineData, teamData] = await Promise.all([
-        supabase.from("about_content").select("*").single(),
-        supabase.from("timeline_events").select("*").order("display_order"),
-        supabase.from("team_members").select("*").order("display_order"),
-      ]);
-
-      if (aboutData.data) setContent(aboutData.data);
-      if (timelineData.data) setTimeline(timelineData.data);
-      if (teamData.data) setTeam(teamData.data);
-    };
-    loadData();
+    loadContent();
+    loadTimeline();
+    loadTeam();
   }, []);
+
+  // Default content fallbacks
+  const defaultMission = "To revolutionize post-harvest processing in Africa by providing affordable, sustainable, and intelligent solar drying solutions that empower smallholder farmers, reduce food waste, and contribute to food security and climate action.";
+  const defaultVision = "A future where every farmer in Africa has access to smart, sustainable technology that enables them to process their harvest efficiently, maximize their income, and contribute to a greener planet through renewable energy adoption.";
 
   return (
     <div className="min-h-screen">
@@ -49,31 +142,49 @@ const About = () => {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="glass rounded-2xl p-8"
-            >
-              <Target className="w-12 h-12 text-primary mb-4" />
-              <h2 className="text-3xl font-bold text-foreground mb-4">Our Mission</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {content?.mission || "To revolutionize post-harvest processing in Africa by providing affordable, sustainable, and intelligent solar drying solutions that empower smallholder farmers, reduce food waste, and contribute to food security and climate action."}
-              </p>
-            </motion.div>
+            {isLoadingContent ? (
+              <>
+                <ContentSkeleton />
+                <ContentSkeleton />
+              </>
+            ) : contentError ? (
+              <div className="lg:col-span-2 text-center py-12">
+                <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">{contentError}</p>
+                <Button onClick={loadContent} variant="outline">
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Retry
+                </Button>
+              </div>
+            ) : (
+              <>
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="glass rounded-2xl p-8"
+                >
+                  <Target className="w-12 h-12 text-primary mb-4" />
+                  <h2 className="text-3xl font-bold text-foreground mb-4">Our Mission</h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {content?.mission || defaultMission}
+                  </p>
+                </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="glass rounded-2xl p-8"
-            >
-              <Eye className="w-12 h-12 text-primary mb-4" />
-              <h2 className="text-3xl font-bold text-foreground mb-4">Our Vision</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {content?.vision || "A future where every farmer in Africa has access to smart, sustainable technology that enables them to process their harvest efficiently, maximize their income, and contribute to a greener planet through renewable energy adoption."}
-              </p>
-            </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, x: 30 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="glass rounded-2xl p-8"
+                >
+                  <Eye className="w-12 h-12 text-primary mb-4" />
+                  <h2 className="text-3xl font-bold text-foreground mb-4">Our Vision</h2>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {content?.vision || defaultVision}
+                  </p>
+                </motion.div>
+              </>
+            )}
           </div>
         </div>
       </section>
@@ -96,32 +207,54 @@ const About = () => {
             <div className="hidden lg:block absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-border" />
 
             <div className="space-y-12">
-              {timeline.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`flex flex-col lg:flex-row items-center gap-8 ${
-                    index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-                  }`}
-                >
-                  <div className={`flex-1 ${index % 2 === 0 ? "lg:text-right" : "lg:text-left"}`}>
-                    <div className="bg-card rounded-xl p-6 shadow-md">
-                      <div className="text-2xl font-bold text-primary mb-2">{item.year}</div>
-                      <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
-                      <p className="text-muted-foreground">{item.description}</p>
+              {isLoadingTimeline ? (
+                <>
+                  <TimelineSkeleton />
+                  <TimelineSkeleton />
+                  <TimelineSkeleton />
+                </>
+              ) : timelineError ? (
+                <div className="text-center py-12">
+                  <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+                  <p className="text-muted-foreground mb-4">{timelineError}</p>
+                  <Button onClick={loadTimeline} variant="outline">
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Retry
+                  </Button>
+                </div>
+              ) : timeline.length === 0 ? (
+                <div className="text-center py-12">
+                  <Award className="h-12 w-12 text-muted-foreground/50 mx-auto mb-4" />
+                  <p className="text-muted-foreground">Timeline coming soon</p>
+                </div>
+              ) : (
+                timeline.map((item, index) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className={`flex flex-col lg:flex-row items-center gap-8 ${
+                      index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
+                    }`}
+                  >
+                    <div className={`flex-1 ${index % 2 === 0 ? "lg:text-right" : "lg:text-left"}`}>
+                      <div className="bg-card rounded-xl p-6 shadow-md">
+                        <div className="text-2xl font-bold text-primary mb-2">{item.year}</div>
+                        <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
+                        <p className="text-muted-foreground">{item.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  
-                  <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow z-10">
-                    <Award className="w-6 h-6 text-primary-foreground" />
-                  </div>
-                  
-                  <div className="flex-1 hidden lg:block" />
-                </motion.div>
-              ))}
+                    
+                    <div className="w-12 h-12 rounded-full gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow z-10">
+                      <Award className="w-6 h-6 text-primary-foreground" />
+                    </div>
+                    
+                    <div className="flex-1 hidden lg:block" />
+                  </motion.div>
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -140,33 +273,68 @@ const About = () => {
             <p className="text-xl text-muted-foreground">Experts driving innovation in agricultural technology</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="group cursor-pointer"
-                onClick={() => setSelectedMember(member)}
-              >
-                <div className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-glow transition-all duration-300 hover:-translate-y-2">
-                  {member.image_url ? (
-                    <img src={member.image_url} alt={member.name} className="aspect-square w-full object-cover" />
-                  ) : (
-                    <div className="aspect-square bg-gradient-primary" />
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
-                    <div className="text-primary font-medium mb-2">{member.title}</div>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{member.expertise}</p>
-                    <p className="text-xs text-primary mt-3 font-medium group-hover:underline">Click to view full profile →</p>
+          {isLoadingTeam ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              <TeamMemberSkeleton />
+              <TeamMemberSkeleton />
+              <TeamMemberSkeleton />
+              <TeamMemberSkeleton />
+            </div>
+          ) : teamError ? (
+            <div className="text-center py-12">
+              <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+              <p className="text-muted-foreground mb-4">{teamError}</p>
+              <Button onClick={loadTeam} variant="outline">
+                <RefreshCw className="h-4 w-4 mr-2" />
+                Retry
+              </Button>
+            </div>
+          ) : team.length === 0 ? (
+            <div className="text-center py-16">
+              <UserPlus className="h-16 w-16 text-muted-foreground/50 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-foreground mb-2">Team Coming Soon</h3>
+              <p className="text-muted-foreground max-w-md mx-auto">
+                Our leadership team profiles are being prepared. Check back soon to meet the experts behind our mission.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {team.map((member, index) => (
+                <motion.div
+                  key={member.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedMember(member)}
+                >
+                  <div className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-glow transition-all duration-300 hover:-translate-y-2">
+                    {member.image_url ? (
+                      <img 
+                        src={member.image_url} 
+                        alt={member.name} 
+                        className="aspect-square w-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          target.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                    ) : null}
+                    <div className={`aspect-square bg-gradient-primary ${member.image_url ? 'hidden' : ''}`} />
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
+                      <div className="text-primary font-medium mb-2">{member.title}</div>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{member.expertise}</p>
+                      <p className="text-xs text-primary mt-3 font-medium group-hover:underline">Click to view full profile →</p>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
 
           {/* Team Member Modal */}
           <TeamMemberModal 
