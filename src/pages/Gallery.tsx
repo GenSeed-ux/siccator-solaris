@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Play, Image as ImageIcon, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import SEO from "@/components/SEO";
+import LazyImage from "@/components/LazyImage";
+import GalleryLightbox from "@/components/GalleryLightbox";
 
 interface GalleryItem {
   id: string;
@@ -30,7 +32,8 @@ const Gallery = () => {
   const [media, setMedia] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState("all");
-  const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const loadMedia = async () => {
@@ -64,8 +67,18 @@ const Gallery = () => {
     (item) => activeCategory === "all" || item.category === activeCategory
   );
 
+  const openLightbox = (index: number) => {
+    setCurrentIndex(index);
+    setLightboxOpen(true);
+  };
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Gallery & Media"
+        description="See our solar dryers in action across Africa - from installation to harvest. Photos and videos of Siccator Solaris technology."
+      />
+
       {/* Hero */}
       <section className="relative py-32 gradient-hero">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -129,9 +142,9 @@ const Gallery = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
                   className="group relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer"
-                  onClick={() => setSelectedItem(item)}
+                  onClick={() => openLightbox(index)}
                 >
-                  <img
+                  <LazyImage
                     src={item.thumbnail_url || item.media_url}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
@@ -170,38 +183,14 @@ const Gallery = () => {
         </div>
       </section>
 
-      {/* Lightbox Modal */}
-      <Dialog open={!!selectedItem} onOpenChange={() => setSelectedItem(null)}>
-        <DialogContent className="max-w-4xl p-0 overflow-hidden">
-          {selectedItem && (
-            <div>
-              {selectedItem.media_type === "video" ? (
-                <video
-                  src={selectedItem.media_url}
-                  controls
-                  autoPlay
-                  className="w-full aspect-video"
-                />
-              ) : (
-                <img
-                  src={selectedItem.media_url}
-                  alt={selectedItem.title}
-                  className="w-full"
-                />
-              )}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">{selectedItem.title}</h3>
-                {selectedItem.description && (
-                  <p className="text-muted-foreground mb-2">{selectedItem.description}</p>
-                )}
-                {selectedItem.location && (
-                  <p className="text-sm text-primary">📍 {selectedItem.location}</p>
-                )}
-              </div>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Enhanced Lightbox */}
+      <GalleryLightbox
+        items={displayMedia}
+        currentIndex={currentIndex}
+        isOpen={lightboxOpen}
+        onClose={() => setLightboxOpen(false)}
+        onNavigate={setCurrentIndex}
+      />
     </div>
   );
 };
