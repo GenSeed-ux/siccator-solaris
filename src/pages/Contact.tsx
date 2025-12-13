@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Phone, Mail, Send } from "lucide-react";
+import { MapPin, Phone, Mail, Send, ExternalLink, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -8,6 +8,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import PartnershipDialog from "@/components/PartnershipDialog";
 
+const GOOGLE_FORM_URL = "https://forms.gle/VuuSnVy1DaERgnxT9";
 const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -242,7 +243,7 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* WhatsApp CTA */}
+      {/* Farmer Survey Section */}
       <section className="py-20 bg-muted">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -250,10 +251,42 @@ const Contact = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
+            <div className="w-16 h-16 rounded-full gradient-primary flex items-center justify-center mx-auto mb-6">
+              <ClipboardList className="w-8 h-8 text-primary-foreground" />
+            </div>
             <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-4">
+              Share Your Feedback
+            </h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Help us improve our technology by sharing your experience and needs. Your feedback shapes the future of sustainable agriculture.
+            </p>
+            <Button 
+              size="lg" 
+              onClick={() => window.open(GOOGLE_FORM_URL, '_blank')}
+              className="gradient-primary text-primary-foreground"
+            >
+              <ExternalLink className="w-5 h-5 mr-2" />
+              Take the Survey
+            </Button>
+            <p className="text-sm text-muted-foreground mt-4">
+              Takes approximately 5-10 minutes to complete
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* WhatsApp CTA */}
+      <section className="py-16 bg-card border-t border-border">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-2xl font-bold text-foreground mb-4">
               Need Immediate Assistance?
             </h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-muted-foreground mb-6">
               Chat with our support team on WhatsApp for quick answers
             </p>
             <Button size="lg" className="bg-[#25D366] hover:bg-[#128C7E] text-white">
