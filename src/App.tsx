@@ -15,6 +15,7 @@ import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import Gallery from "./pages/Gallery";
 import SuccessStories from "./pages/SuccessStories";
+import Survey from "./pages/Survey";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import DashboardAnalytics from "./pages/dashboard/Analytics";
@@ -61,6 +62,7 @@ const App = () => (
               <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
               <Route path="/gallery" element={<Layout><Gallery /></Layout>} />
               <Route path="/success-stories" element={<Layout><SuccessStories /></Layout>} />
+              <Route path="/survey" element={<Layout><Survey /></Layout>} />
               <Route path="/contact" element={<Layout><Contact /></Layout>} />
               
               {/* Pages without Layout */}
