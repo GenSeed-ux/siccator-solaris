@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Cpu, Wifi, Sun, Thermometer, Droplets, Wind, Zap, Shield } from "lucide-react";
+import { Cpu, Wifi, Sun, Thermometer, Droplets, Wind, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import SEO from "@/components/SEO";
+import ProductComparison from "@/components/ProductComparison";
 
 const Technology = () => {
   const [sections, setSections] = useState<any[]>([]);
@@ -14,6 +16,7 @@ const Technology = () => {
     };
     loadSections();
   }, []);
+
   const features = [
     {
       icon: Cpu,
@@ -52,8 +55,32 @@ const Technology = () => {
     { label: "Warranty", value: "5 years" },
   ];
 
+  // Product schema for SEO
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: "Siccator Solaris Intelligentis V2",
+    description: "Advanced IoT-enabled solar dryer combining artificial intelligence, renewable energy, and precision agriculture for optimal post-harvest processing",
+    brand: {
+      "@type": "Brand",
+      name: "Siccator Solaris",
+    },
+    category: "Agricultural Equipment",
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/InStock",
+      priceCurrency: "USD",
+      priceValidUntil: "2025-12-31",
+    },
+  };
+
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Technology - Siccator Solaris Intelligentis V2"
+        description="Advanced IoT-enabled solar dryer combining AI, renewable energy, and precision agriculture. Multi-sensor monitoring, cloud connectivity, and smart drying optimization."
+      />
+
       {/* Hero */}
       <section className="relative py-32 gradient-hero">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -145,9 +172,41 @@ const Technology = () => {
         </div>
       </section>
 
-      {/* Features Tabs */}
+      {/* Product Comparison */}
       <section className="py-20 bg-muted">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              Compare Models
+            </h2>
+            <p className="text-xl text-muted-foreground">
+              Find the perfect solution for your agricultural needs
+            </p>
+          </motion.div>
+
+          <ProductComparison />
+        </div>
+      </section>
+
+      {/* Features Tabs */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-4xl lg:text-5xl font-bold text-foreground mb-4">
+              Key Features
+            </h2>
+          </motion.div>
+
           <Tabs defaultValue="ai" className="w-full">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 mb-8">
               <TabsTrigger value="ai">AI Intelligence</TabsTrigger>
@@ -192,7 +251,7 @@ const Technology = () => {
       </section>
 
       {/* Technical Specifications */}
-      <section className="py-20">
+      <section className="py-20 bg-muted">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -227,7 +286,7 @@ const Technology = () => {
       </section>
 
       {/* Sensor Icons */}
-      <section className="py-20 bg-muted">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -268,6 +327,12 @@ const Technology = () => {
           </div>
         </div>
       </section>
+
+      {/* JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
     </div>
   );
 };
