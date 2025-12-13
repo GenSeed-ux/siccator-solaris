@@ -94,14 +94,12 @@ const Survey = () => {
           >
             <p className="text-sm text-muted-foreground">
               Having trouble with the embedded form?{" "}
-              <a
-                href={GOOGLE_FORM_DIRECT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:underline"
+              <button
+                onClick={() => window.open(GOOGLE_FORM_DIRECT_URL, '_blank')}
+                className="text-primary hover:underline cursor-pointer"
               >
                 Click here to open in a new tab
-              </a>
+              </button>
             </p>
           </motion.div>
         </div>
