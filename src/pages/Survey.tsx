@@ -4,7 +4,6 @@ import { ClipboardList, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Google Form URLs
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfiD0Qd8EmaOdwB5F0gqwWZnKwg-m3gdKdKexmXsZZuf4by-A/viewform?embedded=true";
 const GOOGLE_FORM_DIRECT_URL = "https://forms.gle/VuuSnVy1DaERgnxT9";
 
 const Survey = () => {
@@ -44,63 +43,19 @@ const Survey = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-card rounded-xl shadow-lg border border-border overflow-hidden"
+            className="bg-card rounded-xl shadow-lg border border-border p-8 text-center"
           >
-            {/* Survey Header */}
-            <div className="p-6 border-b border-border bg-muted/30">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  <h2 className="text-xl font-semibold text-foreground">Complete the Survey</h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Takes approximately 5-10 minutes to complete
-                  </p>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => window.open(GOOGLE_FORM_DIRECT_URL, '_blank')}
-                  className="flex items-center gap-2"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  Open in New Tab
-                </Button>
-              </div>
-            </div>
-
-            {/* Embedded Google Form */}
-            <div className="relative w-full" style={{ minHeight: '800px' }}>
-              <iframe
-                src={GOOGLE_FORM_URL}
-                width="100%"
-                height="800"
-                frameBorder="0"
-                marginHeight={0}
-                marginWidth={0}
-                title="Farmer Feedback Survey"
-                className="w-full"
-                loading="lazy"
-              >
-                Loading survey...
-              </iframe>
-            </div>
-          </motion.div>
-
-          {/* Additional Info */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mt-8 text-center"
-          >
-            <p className="text-sm text-muted-foreground">
-              Having trouble with the embedded form?{" "}
-              <button
-                onClick={() => window.open(GOOGLE_FORM_DIRECT_URL, '_blank')}
-                className="text-primary hover:underline cursor-pointer"
-              >
-                Click here to open in a new tab
-              </button>
+            <p className="text-muted-foreground mb-6">
+              Takes approximately 5-10 minutes to complete
             </p>
+            <Button
+              size="lg"
+              onClick={() => window.open(GOOGLE_FORM_DIRECT_URL, '_blank')}
+              className="flex items-center gap-2"
+            >
+              <ExternalLink className="w-5 h-5" />
+              Take the Survey
+            </Button>
           </motion.div>
         </div>
       </section>
