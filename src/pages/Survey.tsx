@@ -3,9 +3,9 @@ import { motion } from "framer-motion";
 import { ClipboardList, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Replace this with your actual Google Form embed URL
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform?embedded=true";
-const GOOGLE_FORM_DIRECT_URL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/viewform";
+// Google Form URLs
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfiD0Qd8EmaOdwB5F0gqwWZnKwg-m3gdKdKexmXsZZuf4by-A/viewform?embedded=true";
+const GOOGLE_FORM_DIRECT_URL = "https://forms.gle/VuuSnVy1DaERgnxT9";
 
 const Survey = () => {
   return (
