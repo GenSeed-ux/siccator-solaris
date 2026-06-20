@@ -175,4 +175,30 @@ All colors MUST be HSL.
     backdrop-filter: blur(10px);
     border: 1px solid rgba(125, 200, 150, 0.2);
   }
+
+  /* Neofarm soft green canvas inspired by farming app reference */
+  .neofarm-canvas {
+    background:
+      radial-gradient(ellipse 80% 60% at 0% 0%, hsl(88 65% 82% / 0.9) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 60% at 100% 0%, hsl(95 60% 78% / 0.8) 0%, transparent 55%),
+      linear-gradient(180deg, hsl(88 55% 84%) 0%, hsl(90 50% 88%) 100%);
+  }
+
+  .dark .neofarm-canvas {
+    background: linear-gradient(180deg, hsl(145 32% 8%) 0%, hsl(145 30% 12%) 100%);
+  }
+
+  .neofarm-card {
+    @apply bg-card rounded-3xl border border-white/60 shadow-[0_8px_30px_-12px_hsl(152_40%_25%/0.18)];
+  }
+
+  .neofarm-pill {
+    @apply rounded-full px-3 py-1 text-xs font-semibold;
+  }
+
+  .lime-accent {
+    background: linear-gradient(135deg, hsl(88 75% 60%) 0%, hsl(95 70% 50%) 100%);
+    color: hsl(150 40% 15%);
+  }
 }
+
