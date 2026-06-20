@@ -36,7 +36,7 @@ const VideoModal = ({ isOpen, onClose, src, title, poster }: VideoModalProps) =>
   }, [isOpen]);
 
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
+    let timeout: ReturnType<typeof setTimeout>;
     if (isPlaying) {
       timeout = setTimeout(() => setShowControls(false), 3000);
     }
