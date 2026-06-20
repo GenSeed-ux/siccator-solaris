@@ -9,6 +9,7 @@ import { LightSensor } from "@/components/dashboard/sensors/LightSensor";
 import { PowerModeIndicator } from "@/components/dashboard/PowerModeIndicator";
 import { motion } from "framer-motion";
 import { useMultiTrayDrying } from "@/hooks/useMultiTrayDrying";
+import { Bell, Leaf } from "lucide-react";
 
 const Dashboard = () => {
   const {
@@ -19,7 +20,6 @@ const Dashboard = () => {
     systemData,
     averageTemperature,
     averageHumidity,
-    averageMoisture,
     overallProgress,
     activeTraysCount,
     session,
@@ -37,48 +37,58 @@ const Dashboard = () => {
     clearAllAlerts,
   } = useMultiTrayDrying(4);
 
+  const greeting = (() => {
+    const h = new Date().getHours();
+    if (h < 12) return "Good Morning";
+    if (h < 18) return "Good Afternoon";
+    return "Good Evening";
+  })();
+
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full neofarm-canvas">
         <DashboardSidebar />
-        
+
         <main className="flex-1 overflow-auto">
-          {/* Header */}
-          <div className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
-            <div className="flex items-center justify-between px-6 py-4">
-              <div className="flex items-center gap-4">
+          {/* Header — softer, app-like */}
+          <div className="sticky top-0 z-10 backdrop-blur-md bg-white/40 dark:bg-card/40 border-b border-white/40">
+            <div className="flex items-center justify-between px-4 sm:px-8 py-4">
+              <div className="flex items-center gap-3">
                 <SidebarTrigger />
-                <div>
-                  <h1 className="text-2xl font-bold text-foreground">
-                    Multi-Tray Solar Dryer Dashboard
-                  </h1>
-                  <p className="text-sm text-muted-foreground">
-                    {trayCount} trays • Real-time monitoring • AI optimization
-                  </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-2xl lime-accent flex items-center justify-center shadow-md">
+                    <Leaf className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-muted-foreground">Hi, {greeting}</p>
+                    <h1 className="text-lg sm:text-xl font-bold text-foreground leading-tight">
+                      Neofarm Dryer
+                    </h1>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <PowerModeIndicator mode={powerMode} batteryLevel={85} />
-                {unacknowledgedAlerts.length > 0 && (
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 1, repeat: Infinity }}
-                    className="px-3 py-1 bg-destructive text-destructive-foreground rounded-full text-sm font-medium"
-                  >
-                    {unacknowledgedAlerts.length} Alerts
-                  </motion.div>
-                )}
+                <button className="relative w-10 h-10 rounded-full bg-white/80 dark:bg-card flex items-center justify-center shadow-sm hover:scale-105 transition-transform">
+                  <Bell className="w-4 h-4 text-foreground" />
+                  {unacknowledgedAlerts.length > 0 && (
+                    <motion.span
+                      animate={{ scale: [1, 1.15, 1] }}
+                      transition={{ duration: 1.2, repeat: Infinity }}
+                      className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 text-[10px] font-bold rounded-full bg-destructive text-destructive-foreground flex items-center justify-center"
+                    >
+                      {unacknowledgedAlerts.length}
+                    </motion.span>
+                  )}
+                </button>
               </div>
             </div>
           </div>
 
           {/* Main Content */}
-          <div className="p-6 space-y-6">
-            {/* System Overview */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-            >
+          <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-[1600px] mx-auto">
+            {/* Hero / Chamber Overview */}
+            <motion.div initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }}>
               <SystemOverview
                 averageTemperature={averageTemperature}
                 averageHumidity={averageHumidity}
@@ -108,7 +118,7 @@ const Dashboard = () => {
               />
             </motion.div>
 
-            {/* Control Panel and Safety */}
+            {/* Control + Safety */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -126,7 +136,9 @@ const Dashboard = () => {
                   onStop={stopSession}
                   onTempChange={(temp) => updateConfig({ targetTemp: temp })}
                   onCropChange={(crop) => updateConfig({ cropType: crop })}
-                  onModeToggle={() => updateConfig({ mode: config.mode === "auto" ? "manual" : "auto" })}
+                  onModeToggle={() =>
+                    updateConfig({ mode: config.mode === "auto" ? "manual" : "auto" })
+                  }
                   onFanControl={setFanSpeed}
                 />
               </motion.div>
@@ -147,7 +159,7 @@ const Dashboard = () => {
               </motion.div>
             </div>
 
-            {/* Energy & Environment */}
+            {/* Energy & Light */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

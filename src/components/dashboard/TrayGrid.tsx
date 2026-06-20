@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus, Layers } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -24,58 +23,57 @@ export function TrayGrid({
   onRemoveTray,
 }: TrayGridProps) {
   return (
-    <Card>
-      <CardHeader className="pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
-              <Layers className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div>
-              <CardTitle>Drying Trays</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                {trayCount} trays configured • Each with independent sensors
-              </p>
-            </div>
+    <div className="neofarm-card p-6">
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-2xl lime-accent flex items-center justify-center">
+            <Layers className="w-5 h-5" />
           </div>
-          <TooltipProvider>
-            <div className="flex items-center gap-2">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={onRemoveTray}
-                    disabled={trayCount <= 2}
-                    className="h-9 w-9"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Remove tray (min: 2)</TooltipContent>
-              </Tooltip>
-              <span className="text-sm font-medium text-foreground w-8 text-center">
-                {trayCount}
-              </span>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={onAddTray}
-                    disabled={trayCount >= 8}
-                    className="h-9 w-9"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Add tray (max: 8)</TooltipContent>
-              </Tooltip>
-            </div>
-          </TooltipProvider>
+          <div>
+            <h2 className="text-base font-bold text-foreground">Drying Trays</h2>
+            <p className="text-xs text-muted-foreground">
+              {trayCount} trays • independent sensors
+            </p>
+          </div>
         </div>
-      </CardHeader>
-      <CardContent>
+        <TooltipProvider>
+          <div className="flex items-center gap-2 bg-white/70 rounded-full p-1 border border-white/80">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onRemoveTray}
+                  disabled={trayCount <= 2}
+                  className="h-8 w-8 rounded-full"
+                >
+                  <Minus className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Remove tray (min: 2)</TooltipContent>
+            </Tooltip>
+            <span className="text-sm font-bold text-foreground w-6 text-center">
+              {trayCount}
+            </span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={onAddTray}
+                  disabled={trayCount >= 8}
+                  className="h-8 w-8 rounded-full lime-accent hover:opacity-90"
+                >
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Add tray (max: 8)</TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
+      </div>
+      <div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <AnimatePresence mode="popLayout">
             {trays.map((tray, index) => (
@@ -161,7 +159,8 @@ export function TrayGrid({
             Heat rises from bottom • Airflow exits top
           </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
+
   );
 }
