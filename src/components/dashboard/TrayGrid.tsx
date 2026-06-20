@@ -160,7 +160,8 @@ export function TrayGrid({
             Heat rises from bottom • Airflow exits top
           </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
+
   );
 }
