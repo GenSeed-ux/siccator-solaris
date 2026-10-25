@@ -74,7 +74,7 @@ export function SafetyPanel({
   };
 
   return (
-    <Card className={`transition-all duration-300 ${
+    <Card className={`glass transition-all duration-300 ${
       hasDangerAlerts 
         ? "border-2 border-red-500 shadow-lg shadow-red-500/20" 
         : hasAlerts 

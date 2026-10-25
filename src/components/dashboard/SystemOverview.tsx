@@ -71,7 +71,7 @@ export function SystemOverview({
   ];
 
   return (
-    <div className="neofarm-card overflow-hidden">
+    <div className="glass overflow-hidden">
       {/* Top: weather-style hero */}
       <div className="relative p-6 sm:p-8">
         <div className="flex items-start justify-between mb-6">

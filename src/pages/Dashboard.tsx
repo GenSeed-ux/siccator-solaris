@@ -46,12 +46,17 @@ const Dashboard = () => {
 
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full neofarm-canvas">
+      <div className="relative isolate min-h-screen flex w-full glass-canvas">
+        {/* Blurred color blobs that glass surfaces blur against */}
+        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" aria-hidden="true">
+          <div className="absolute -top-32 -left-24 h-[32rem] w-[32rem] rounded-full bg-orange-400 opacity-30 blur-3xl" />
+          <div className="absolute -bottom-40 -right-24 h-[36rem] w-[36rem] rounded-full bg-blue-400 opacity-30 blur-3xl" />
+        </div>
         <DashboardSidebar />
 
         <main className="flex-1 overflow-auto">
-          {/* Header — softer, app-like */}
-          <div className="sticky top-0 z-10 backdrop-blur-md bg-white/40 dark:bg-card/40 border-b border-white/40">
+          {/* Header — frosted glass bar */}
+          <div className="sticky top-0 z-10 bg-white/25 backdrop-blur-xl border-b border-white/40">
             <div className="flex items-center justify-between px-4 sm:px-8 py-4">
               <div className="flex items-center gap-3">
                 <SidebarTrigger />
