@@ -23,7 +23,7 @@ export function TrayGrid({
   onRemoveTray,
 }: TrayGridProps) {
   return (
-    <div className="neofarm-card p-6">
+    <div className="glass p-6">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-2xl lime-accent flex items-center justify-center">
@@ -96,7 +96,7 @@ export function TrayGrid({
         </div>
 
         {/* Visual Dryer Representation */}
-        <div className="mt-6 p-4 bg-muted/30 rounded-xl border border-border">
+        <div className="mt-6 p-4 bg-white/40 rounded-xl border border-white/50">
           <p className="text-xs text-muted-foreground mb-3 text-center">Dryer Chamber Layout</p>
           <div className="flex flex-col items-center gap-1 max-w-xs mx-auto">
             {/* Top vent */}

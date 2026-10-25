@@ -13,7 +13,7 @@ export function LightSensor({ intensity, timestamp }: LightSensorProps) {
   const percentage = Math.min((intensity / 1000) * 100, 100);
 
   return (
-    <Card>
+    <Card className="glass">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           {isDaylight ? (

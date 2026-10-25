@@ -77,7 +77,7 @@ export function EnhancedControlPanel({
   const canStart = cropType.length > 0 && !isActive;
 
   return (
-    <Card>
+    <Card className="glass">
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

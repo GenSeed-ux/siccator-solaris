@@ -60,7 +60,7 @@ export function TrayCard({ tray, targetTemp, isActive }: TrayCardProps) {
         animate={{ opacity: 1, scale: 1 }}
         whileHover={{ y: -3 }}
         transition={{ duration: 0.3 }}
-        className="neofarm-card p-5 h-full relative overflow-hidden"
+        className="glass p-5 h-full relative overflow-hidden"
       >
         {isActive && tray.status === "active" && (
           <motion.div

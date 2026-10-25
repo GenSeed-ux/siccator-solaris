@@ -14,7 +14,7 @@ interface EnergyMeterProps {
 
 export function EnergyMeter({ voltage, current, power, energy, powerFactor, frequency }: EnergyMeterProps) {
   return (
-    <Card className="relative overflow-hidden">
+    <Card className="relative overflow-hidden glass">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Zap className="h-5 w-5 text-primary" />
