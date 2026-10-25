@@ -65,7 +65,7 @@ export function DashboardSidebar() {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border">
+    <Sidebar collapsible="icon" className="border-r border-white/40 !bg-white/25 backdrop-blur-xl">
       <SidebarHeader className="border-b border-sidebar-border p-4">
         <div className="flex items-center gap-3">
           <SolarDryerLogo size={40} variant="icon" />
