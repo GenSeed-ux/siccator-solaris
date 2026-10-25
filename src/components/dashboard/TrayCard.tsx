@@ -87,7 +87,7 @@ export function TrayCard({ tray, targetTemp, isActive }: TrayCardProps) {
         </div>
 
         {/* Moisture circle as focal point */}
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col items-center gap-3">
           <div className="relative" style={{ width: size, height: size }}>
             <svg width={size} height={size} className="-rotate-90">
               <circle
@@ -120,7 +120,7 @@ export function TrayCard({ tray, targetTemp, isActive }: TrayCardProps) {
             </div>
           </div>
 
-          <div className="flex-1 min-w-0 space-y-2">
+          <div className="w-full space-y-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <div
