@@ -202,3 +202,69 @@ All colors MUST be HSL.
   }
 }
 
+/* ===== Glassmorphism design system ===== */
+/* Kept outside @layer so .glass reliably wins over component background utilities
+   (e.g. shadcn Card's bg-card) while hover/active variants still apply. */
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.18);
+  --glass-bg-strong: rgba(255, 255, 255, 0.32);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  --glass-blur: 20px;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 24px;
+}
+
+.glass-strong {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: 24px;
+}
+
+.glass-active {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, 0.8);
+}
+
+.glass:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Soft blue-grey canvas the glass surfaces blur against */
+.glass-canvas {
+  background: linear-gradient(135deg, #8fa3b8 0%, #b9c6d3 50%, #9fb1c4 100%);
+}
+
+.dark .glass,
+.dark .glass-strong {
+  --glass-bg: rgba(20, 45, 40, 0.35);
+  --glass-bg-strong: rgba(20, 45, 40, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  background: var(--glass-bg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dark .glass-active {
+  background: rgba(20, 45, 40, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(1px)) {
+  .glass,
+  .glass-strong,
+  .glass-active {
+    background: rgba(255, 255, 255, 0.7);
+  }
+}
+
