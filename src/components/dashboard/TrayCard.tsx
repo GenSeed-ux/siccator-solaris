@@ -120,7 +120,7 @@ export function TrayCard({ tray, targetTemp, isActive }: TrayCardProps) {
             </div>
           </div>
 
-          <div className="flex-1 space-y-2">
+          <div className="flex-1 min-w-0 space-y-2">
             <Tooltip>
               <TooltipTrigger asChild>
                 <div
