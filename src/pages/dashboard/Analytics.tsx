@@ -16,11 +16,11 @@ const energyData = [
 ];
 
 const cropDistribution = [
-  { name: "Maize", value: 35, color: "hsl(var(--chart-1))" },
-  { name: "Pepper", value: 25, color: "hsl(var(--chart-2))" },
-  { name: "Fish", value: 20, color: "hsl(var(--chart-3))" },
-  { name: "Cassava", value: 15, color: "hsl(var(--chart-4))" },
-  { name: "Cocoa", value: 5, color: "hsl(var(--chart-5))" },
+  { name: "Maize", value: 35, color: "#4ade80" },
+  { name: "Pepper", value: 25, color: "#fbbf24" },
+  { name: "Fish", value: 20, color: "#38bdf8" },
+  { name: "Cassava", value: 15, color: "#f87171" },
+  { name: "Cocoa", value: 5, color: "#c084fc" },
 ];
 
 const efficiencyData = [
@@ -132,14 +132,14 @@ const Analytics = () => {
                   <CardContent>
                     <ResponsiveContainer width="100%" height={350}>
                       <BarChart data={energyData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                        <XAxis dataKey="day" stroke="hsl(var(--foreground))" />
-                        <YAxis stroke="hsl(var(--foreground))" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.25)" />
+                        <XAxis dataKey="day" stroke="#ffffff" />
+                        <YAxis stroke="#ffffff" />
                         <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }} />
                         <Legend />
-                        <Bar dataKey="solar" fill="hsl(var(--chart-1))" name="Solar (kWh)" />
-                        <Bar dataKey="grid" fill="hsl(var(--chart-2))" name="Grid (kWh)" />
-                        <Bar dataKey="battery" fill="hsl(var(--chart-3))" name="Battery (kWh)" />
+                        <Bar dataKey="solar" fill="#4ade80" name="Solar (kWh)" />
+                        <Bar dataKey="grid" fill="#fbbf24" name="Grid (kWh)" />
+                        <Bar dataKey="battery" fill="#38bdf8" name="Battery (kWh)" />
                       </BarChart>
                     </ResponsiveContainer>
                   </CardContent>
@@ -185,13 +185,13 @@ const Analytics = () => {
                   <CardContent>
                     <ResponsiveContainer width="100%" height={350}>
                       <LineChart data={efficiencyData}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-                        <XAxis dataKey="month" stroke="hsl(var(--foreground))" />
-                        <YAxis stroke="hsl(var(--foreground))" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.25)" />
+                        <XAxis dataKey="month" stroke="#ffffff" />
+                        <YAxis stroke="#ffffff" />
                         <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))" }} />
                         <Legend />
-                        <Line type="monotone" dataKey="efficiency" stroke="hsl(var(--chart-1))" name="Efficiency %" strokeWidth={2} />
-                        <Line type="monotone" dataKey="sessions" stroke="hsl(var(--chart-2))" name="Sessions" strokeWidth={2} />
+                        <Line type="monotone" dataKey="efficiency" stroke="#4ade80" name="Efficiency %" strokeWidth={2} />
+                        <Line type="monotone" dataKey="sessions" stroke="#fbbf24" name="Sessions" strokeWidth={2} />
                       </LineChart>
                     </ResponsiveContainer>
                   </CardContent>
