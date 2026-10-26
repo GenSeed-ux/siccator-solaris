@@ -300,3 +300,11 @@ All colors MUST be HSL.
 @supports not (backdrop-filter: blur(1px)) {
   .glass-scope .bg-card, .glass-scope .glass-header { background: rgba(30, 60, 40, 0.75) !important; }
 }
+.glass-scope {
+  --chart-1: 142 70% 50%;
+  --chart-2: 38 92% 55%;
+  --chart-3: 199 89% 60%;
+  --chart-4: 0 84% 65%;
+  --chart-5: 280 70% 70%;
+}
+.glass-scope [role="tab"][data-state="active"] { background: rgba(255, 255, 255, 0.35) !important; color: #fff !important; }
