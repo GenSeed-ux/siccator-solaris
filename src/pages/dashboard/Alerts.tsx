@@ -1,5 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { GlassShell } from "@/components/dashboard/GlassShell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -90,14 +89,12 @@ const Alerts = () => {
   };
 
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-background">
-        <DashboardSidebar />
+    <GlassShell>
+      <div className="w-full">
         
         <main className="flex-1 overflow-auto">
-          <div className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
+          <div className="glass-header sticky top-0 z-10 mx-3 mt-3 md:mx-4">
             <div className="flex items-center gap-4 px-6 py-4">
-              <SidebarTrigger />
               <div className="flex-1">
                 <h1 className="text-2xl font-bold text-foreground">Alert Center</h1>
                 <p className="text-sm text-muted-foreground">Monitor and manage system alerts and notifications</p>
@@ -108,7 +105,7 @@ const Alerts = () => {
             </div>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-3 md:p-4 space-y-6">
             {/* Alert Settings */}
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
               <Card>
@@ -252,7 +249,7 @@ const Alerts = () => {
           </div>
         </main>
       </div>
-    </SidebarProvider>
+    </GlassShell>
   );
 };
 

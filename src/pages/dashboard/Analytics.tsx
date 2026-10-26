@@ -1,5 +1,4 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { DashboardSidebar } from "@/components/dashboard/DashboardSidebar";
+import { GlassShell } from "@/components/dashboard/GlassShell";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
@@ -35,14 +34,12 @@ const efficiencyData = [
 
 const Analytics = () => {
   return (
-    <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full bg-background">
-        <DashboardSidebar />
+    <GlassShell>
+      <div className="w-full">
         
         <main className="flex-1 overflow-auto">
-          <div className="sticky top-0 z-10 bg-card border-b border-border shadow-sm">
+          <div className="glass-header sticky top-0 z-10 mx-3 mt-3 md:mx-4">
             <div className="flex items-center gap-4 px-6 py-4">
-              <SidebarTrigger />
               <div>
                 <h1 className="text-2xl font-bold text-foreground">Analytics Dashboard</h1>
                 <p className="text-sm text-muted-foreground">Performance insights and trends</p>
@@ -50,7 +47,7 @@ const Analytics = () => {
             </div>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-3 md:p-4 space-y-6">
             {/* Key Metrics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
@@ -204,7 +201,7 @@ const Analytics = () => {
           </div>
         </main>
       </div>
-    </SidebarProvider>
+    </GlassShell>
   );
 };
 

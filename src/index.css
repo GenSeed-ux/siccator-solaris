@@ -272,3 +272,31 @@ All colors MUST be HSL.
 .glass-range::-webkit-slider-runnable-track { height: 100%; background: transparent; }
 .glass-range::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 10px; height: 34px; margin-top: -3px; border-radius: 6px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
 .glass-range::-moz-range-thumb { width: 10px; height: 34px; border-radius: 6px; background: #fff; border: none; }
+
+/* Glass theme for dashboard sub-pages (scoped; portals like dropdowns keep default theme) */
+.glass-scope {
+  --foreground: 0 0% 100%;
+  --card-foreground: 0 0% 100%;
+  --muted-foreground: 0 0% 88%;
+  --border: 0 0% 100% / 0.3;
+  --input: 0 0% 100% / 0.35;
+  color: hsl(0 0% 100%);
+}
+.glass-scope .bg-card,
+.glass-scope .glass-header {
+  background: rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+}
+.glass-scope .bg-background,
+.glass-scope .bg-muted,
+.glass-scope .bg-muted\/50 { background: rgba(255, 255, 255, 0.12) !important; }
+.glass-scope input, .glass-scope textarea, .glass-scope button[role="combobox"] { color: #fff; }
+.glass-scope input::placeholder { color: rgba(255, 255, 255, 0.7); }
+.glass-scope .recharts-text { fill: #fff; }
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-scope .bg-card, .glass-scope .glass-header { background: rgba(30, 60, 40, 0.75) !important; }
+}
