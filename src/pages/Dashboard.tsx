@@ -7,6 +7,7 @@ import {
   Leaf, ShieldCheck, ShieldAlert, Cloud, Square, Wind, Sprout,
 } from "lucide-react";
 import { useMultiTrayDrying, TraySensorData } from "@/hooks/useMultiTrayDrying";
+import { DryerControlConsole } from "@/components/dashboard/controls/DryerControlConsole";
 import { SafetyPanel } from "@/components/dashboard/SafetyPanel";
 import { EnergyMeter } from "@/components/dashboard/sensors/EnergyMeter";
 import { LightSensor } from "@/components/dashboard/sensors/LightSensor";
@@ -317,32 +318,21 @@ const Dashboard = () => {
           {/* RIGHT */}
           <section className="space-y-5 xl:pt-4">
             {/* Controls panel */}
-            <div className={`${glass} p-4`}>
-              <p className="mb-3 flex items-center gap-3 text-xl"><Sliders className="h-6 w-6" />Dryer Controls</p>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className={`${inner} space-y-3 p-4`}>
-                  <div className="flex items-center justify-between"><div className="flex items-center gap-2"><Fan className="h-6 w-6" /><div><p>Main Fan</p><p className="text-xs text-white/70">(On/Off)</p></div></div><Toggle label="Main fan" on={fanSpeed > 0} onClick={() => setFanSpeed(fanSpeed > 0 ? 0 : 60)} /></div>
-                  <GradientSlider label="Fan speed" value={fanSpeed} min={0} max={100} onChange={setFanSpeed} gradient="linear-gradient(90deg,#f97316,#bfdbfe 50%,#60a5fa)" />
-                </div>
-                <div className={`${inner} space-y-3 p-4`}>
-                  <div className="flex items-center justify-between"><div className="flex items-center gap-2"><Sun className="h-6 w-6" /><div><p>Auto Mode</p><p className="text-xs text-white/70">(Smart control)</p></div></div><Toggle label="Auto mode" on={config.mode === "auto"} onClick={() => updateConfig({ mode: config.mode === "auto" ? "manual" : "auto" })} /></div>
-                  <GradientSlider label="Target temperature" value={config.targetTemp} min={30} max={70} onChange={(v) => updateConfig({ targetTemp: v })} gradient="linear-gradient(90deg,#facc15,#e5e7eb)" />
-                </div>
-                <div className={`${inner} space-y-3 p-4`}>
-                  <div className="flex items-center justify-between"><div className="flex items-center gap-2"><Play className="h-6 w-6" /><div><p>Drying</p><p className="text-xs text-white/70">({statusText})</p></div></div><Toggle label="Drying session" on={isActive} onClick={toggleRun} /></div>
-                  <div className="flex justify-between px-1 text-xs text-white/80">{[0, 33, 66, 100].map((s, i) => <button key={s} onClick={() => setFanSpeed(s)}>{["Off", "Low", "Half", "Full"][i]}</button>)}</div>
-                  <GradientSlider label="Fan preset" value={fanSpeed} min={0} max={100} onChange={setFanSpeed} gradient="rgba(255,255,255,0.15)" />
-                </div>
-                <div className={`${inner} space-y-3 p-4`}>
-                  <div className="flex items-center gap-2"><Sprout className="h-6 w-6" /><div><p>Crop Type</p><p className="text-xs text-white/70">Sets target temp</p></div></div>
-                  <select aria-label="Crop type" value={config.cropType} onChange={(e) => { const c = CROPS.find((x) => x.name === e.target.value); if (c) updateConfig({ cropType: c.name, targetTemp: c.temp }); }}
-                    className="w-full rounded-xl border border-white/30 bg-white/20 px-3 py-2 text-white [&>option]:text-slate-800">
-                    <option value="">Select crop…</option>
-                    {CROPS.map((c) => <option key={c.name} value={c.name}>{c.name} ({c.temp}°C)</option>)}
-                  </select>
-                </div>
-              </div>
-            </div>
+            <DryerControlConsole
+              compact
+              status={session.status}
+              mode={config.mode}
+              targetTemp={config.targetTemp}
+              cropType={config.cropType}
+              fanSpeed={fanSpeed}
+              onStart={startSession}
+              onPause={pauseSession}
+              onStop={stopSession}
+              onTempChange={(targetTemp) => updateConfig({ targetTemp })}
+              onCropChange={(cropType) => updateConfig({ cropType })}
+              onModeToggle={() => updateConfig({ mode: config.mode === "auto" ? "manual" : "auto" })}
+              onFanControl={setFanSpeed}
+            />
 
             {/* Drying trays */}
             <div className={`${glass} p-4`}>
