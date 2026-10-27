@@ -308,3 +308,50 @@ All colors MUST be HSL.
   --chart-5: 280 70% 70%;
 }
 .glass-scope [role="tab"][data-state="active"] { background: rgba(255, 255, 255, 0.35) !important; color: #fff !important; }
+
+/* Shared drying console: isolated tokens preserve the surrounding dashboard. */
+.dryer-console {
+  --background: 150 20% 16%;
+  --foreground: 0 0% 100%;
+  --primary: 145 67% 72%;
+  --primary-foreground: 155 45% 12%;
+  --accent: 40 92% 72%;
+  --accent-foreground: 155 45% 12%;
+  --muted-foreground: 140 12% 86%;
+  --border: 0 0% 100% / 0.22;
+  --input: 0 0% 100% / 0.3;
+  --ring: 145 67% 72%;
+  --destructive: 0 90% 82%;
+  --console-surface: 150 18% 13%;
+  --console-highlight: 0 0% 100%;
+  --console-shadow: 0 14px 48px hsl(150 40% 5% / 0.2);
+  color: hsl(var(--foreground));
+  background: hsl(var(--console-surface) / 0.46);
+  border: 1px solid hsl(var(--border));
+  border-radius: 24px;
+  box-shadow: var(--console-shadow);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  overflow: hidden;
+}
+.dryer-console h2 { letter-spacing: 0; }
+.dryer-console input,
+.dryer-console button[role="combobox"],
+.dryer-console button.bg-background { background: hsl(var(--console-highlight) / 0.07); }
+.dryer-console button.bg-background:hover,
+.dryer-console button[data-state="open"] { background: hsl(var(--console-highlight) / 0.16); color: hsl(var(--foreground)); }
+.dryer-console input::placeholder { color: hsl(var(--muted-foreground) / 0.8); }
+.dryer-console .console-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: hsl(var(--console-highlight) / 0.12); color: hsl(var(--primary)); }
+.dryer-console .console-temperature { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 160px; height: 160px; flex-shrink: 0; border: 7px solid hsl(var(--console-highlight) / 0.12); border-top-color: hsl(var(--accent)); border-right-color: hsl(var(--accent)); border-radius: 50%; }
+.dryer-console .console-step { border-radius: 50%; flex-shrink: 0; }
+.dryer-console .console-footer { background: hsl(var(--console-surface) / 0.2); }
+.dryer-console .console-stop { color: hsl(var(--destructive)); border-color: hsl(var(--destructive) / 0.35); }
+.dryer-console .console-stop:hover { background: hsl(var(--destructive) / 0.12); }
+.dryer-console [role="switch"] { background: hsl(var(--console-highlight) / 0.18); }
+.dryer-console [role="switch"][data-state="checked"] { background: hsl(var(--primary)); }
+.dryer-console [role="switch"] span { background: hsl(var(--foreground)); }
+@supports not (backdrop-filter: blur(1px)) { .dryer-console { background: hsl(var(--console-surface) / 0.96); } }
+@media (max-width: 380px) {
+  .dryer-console .console-temperature { width: 130px; height: 130px; }
+  .dryer-console header, .dryer-console footer, .dryer-console > div > div, .dryer-console > div.border-t { padding-left: 16px; padding-right: 16px; }
+}
