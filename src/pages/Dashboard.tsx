@@ -7,7 +7,6 @@ import {
   Leaf, ShieldCheck, ShieldAlert, Cloud, Square, Wind, Sprout,
 } from "lucide-react";
 import { useMultiTrayDrying, TraySensorData } from "@/hooks/useMultiTrayDrying";
-import { DryerControlConsole } from "@/components/dashboard/controls/DryerControlConsole";
 import { SafetyPanel } from "@/components/dashboard/SafetyPanel";
 import { EnergyMeter } from "@/components/dashboard/sensors/EnergyMeter";
 import { LightSensor } from "@/components/dashboard/sensors/LightSensor";
@@ -317,22 +316,6 @@ const Dashboard = () => {
 
           {/* RIGHT */}
           <section className="space-y-5 xl:pt-4">
-            {/* Controls panel */}
-            <DryerControlConsole
-              compact
-              status={session.status}
-              mode={config.mode}
-              targetTemp={config.targetTemp}
-              cropType={config.cropType}
-              fanSpeed={fanSpeed}
-              onStart={startSession}
-              onPause={pauseSession}
-              onStop={stopSession}
-              onTempChange={(targetTemp) => updateConfig({ targetTemp })}
-              onCropChange={(cropType) => updateConfig({ cropType })}
-              onModeToggle={() => updateConfig({ mode: config.mode === "auto" ? "manual" : "auto" })}
-              onFanControl={setFanSpeed}
-            />
 
             {/* Drying trays */}
             <div className={`${glass} p-4`}>
