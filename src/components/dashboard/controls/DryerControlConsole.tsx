@@ -109,7 +109,7 @@ export function DryerControlConsole({ status, mode, targetTemp, cropType, fanSpe
       <footer className="console-footer border-t border-border px-6 py-5">
         <div className="mb-4 flex items-center justify-between gap-2 text-xs"><span className="truncate text-muted-foreground">{cropType || "No produce selected"}</span><span className="shrink-0 font-medium">{targetTemp}°C · {mode === "auto" ? "Auto" : "Manual"}</span></div>
         <div className="grid grid-cols-[1.35fr_1fr_1fr] gap-2">
-          <Button className="h-12 px-2" disabled={active || !!pending} onClick={() => run("start", onStart)}>{pending === "start" ? <Loader2 className="animate-spin" /> : <Play />}{status === "paused" ? "Resume" : "Start"}</Button>
+          <Button className="h-12 px-2" disabled={active || !!pending} onClick={() => run("start", onStart)}>{pending === "start" ? <Loader2 className="animate-spin" /> : <Play />}Start</Button>
           <Button variant="outline" className="h-12 px-2" disabled={!active || !!pending} onClick={() => run("pause", onPause)}>{pending === "pause" ? <Loader2 className="animate-spin" /> : <Pause />}Pause</Button>
           <Button variant="outline" className="console-stop h-12 px-2" disabled={status === "idle" || !!pending} onClick={() => run("stop", onStop)}>{pending === "stop" ? <Loader2 className="animate-spin" /> : <Square />}Stop</Button>
         </div>
