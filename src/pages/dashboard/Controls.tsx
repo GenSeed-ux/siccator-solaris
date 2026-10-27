@@ -22,10 +22,10 @@ export default function Controls() {
     <GlassShell>
       <div className="glass-header sticky top-0 z-10 mx-3 mt-3 px-6 py-4 md:mx-4">
         <h1 className="text-2xl font-bold text-foreground">Drying Controls</h1>
-        <p className="text-sm text-muted-foreground">Manage your drying session parameters and controls</p>
+        <p className="text-sm text-muted-foreground">Temperature, produce and airflow</p>
       </div>
       <div className="p-3 md:p-4">
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto">
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="max-w-5xl mx-auto">
           <ControlPanel
             status={status}
             mode={config.mode}
