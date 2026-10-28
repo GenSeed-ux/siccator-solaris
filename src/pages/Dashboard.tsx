@@ -336,7 +336,7 @@ const Dashboard = () => {
         </main>
 
         {/* Details */}
-        <section id="details" className="mx-auto grid max-w-[1600px] grid-cols-1 items-start gap-5 p-3 pb-10 text-foreground md:p-4 lg:grid-cols-3">
+        <section id="details" className="glass-scope mx-auto grid max-w-[1600px] grid-cols-1 items-stretch gap-5 p-3 pb-10 md:p-4 lg:grid-cols-2 [&>*:first-child]:lg:col-span-2">
           <SafetyPanel alerts={alerts} systemData={systemData} trays={trays} targetTemp={config.targetTemp} onAcknowledgeAlert={acknowledgeAlert} onClearAllAlerts={clearAllAlerts} />
           <EnergyMeter voltage={systemData.voltage} current={systemData.current} power={systemData.power} energy={systemData.energy} powerFactor={systemData.powerFactor} frequency={systemData.frequency} />
           <LightSensor intensity={systemData.lightIntensity} timestamp={systemData.timestamp} />
