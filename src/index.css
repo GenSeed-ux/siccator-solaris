@@ -324,14 +324,14 @@ All colors MUST be HSL.
   --destructive: 0 90% 82%;
   --console-surface: 150 18% 13%;
   --console-highlight: 0 0% 100%;
-  --console-shadow: 0 14px 48px hsl(150 40% 5% / 0.2);
+  --console-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   color: hsl(var(--foreground));
-  background: hsl(var(--console-surface) / 0.46);
-  border: 1px solid hsl(var(--border));
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 24px;
   box-shadow: var(--console-shadow);
-  backdrop-filter: blur(24px) saturate(140%);
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
   overflow: hidden;
 }
 .dryer-console h2 { letter-spacing: 0; }
@@ -344,13 +344,13 @@ All colors MUST be HSL.
 .dryer-console .console-icon { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; background: hsl(var(--console-highlight) / 0.12); color: hsl(var(--primary)); }
 .dryer-console .console-temperature { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 160px; height: 160px; flex-shrink: 0; border: 7px solid hsl(var(--console-highlight) / 0.12); border-top-color: hsl(var(--accent)); border-right-color: hsl(var(--accent)); border-radius: 50%; }
 .dryer-console .console-step { border-radius: 50%; flex-shrink: 0; }
-.dryer-console .console-footer { background: hsl(var(--console-surface) / 0.2); }
+.dryer-console .console-footer { background: rgba(255, 255, 255, 0.1); }
 .dryer-console .console-stop { color: hsl(var(--destructive)); border-color: hsl(var(--destructive) / 0.35); }
 .dryer-console .console-stop:hover { background: hsl(var(--destructive) / 0.12); }
 .dryer-console [role="switch"] { background: hsl(var(--console-highlight) / 0.18); }
 .dryer-console [role="switch"][data-state="checked"] { background: hsl(var(--primary)); }
 .dryer-console [role="switch"] span { background: hsl(var(--foreground)); }
-@supports not (backdrop-filter: blur(1px)) { .dryer-console { background: hsl(var(--console-surface) / 0.96); } }
+@supports not (backdrop-filter: blur(1px)) { .dryer-console { background: rgba(30, 60, 40, 0.75); } }
 @media (max-width: 380px) {
   .dryer-console .console-temperature { width: 130px; height: 130px; }
   .dryer-console header, .dryer-console footer, .dryer-console > div > div, .dryer-console > div.border-t { padding-left: 16px; padding-right: 16px; }

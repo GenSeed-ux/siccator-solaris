@@ -143,7 +143,7 @@ export function useDryingSession() {
         .from("crop_profiles")
         .select("*")
         .eq("crop_name", config.cropType)
-        .single();
+        .maybeSingle();
 
       const estimatedHours = cropProfile?.estimated_hours || 8;
       const estimatedCompletion = new Date(Date.now() + estimatedHours * 60 * 60 * 1000);
