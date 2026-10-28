@@ -187,8 +187,7 @@ const Dashboard = () => {
           ))}
         </nav>
 
-        <main className="grid grid-cols-1 gap-5 p-3 md:p-4 xl:grid-cols-[1.25fr_1fr]">
-          {/* LEFT */}
+        <main className="mx-auto max-w-[1600px] space-y-5 p-3 md:p-4">
           <section className="space-y-5">
             <motion.h1 initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="pt-4 text-4xl font-medium leading-tight drop-shadow sm:text-5xl">
               Hi Farmer,<br />{greeting}.
@@ -314,8 +313,7 @@ const Dashboard = () => {
             </div>
           </section>
 
-          {/* RIGHT */}
-          <section className="space-y-5 xl:pt-4">
+          <section>
 
             {/* Drying trays */}
             <div className={`${glass} p-4`}>
@@ -330,7 +328,7 @@ const Dashboard = () => {
                   <button aria-label="Add tray" onClick={addTray} className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500"><Plus className="h-4 w-4" /></button>
                 </div>
               </div>
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {trays.map((t) => <TrayMini key={t.trayId} tray={t} highlight={tab === t.trayNumber} />)}
               </div>
             </div>
@@ -338,7 +336,7 @@ const Dashboard = () => {
         </main>
 
         {/* Details */}
-        <section id="details" className="grid grid-cols-1 gap-5 p-3 pb-10 text-foreground md:p-4 lg:grid-cols-3">
+        <section id="details" className="glass-scope mx-auto grid max-w-[1600px] grid-cols-1 items-stretch gap-5 p-3 pb-10 md:p-4 lg:grid-cols-2 [&>*:first-child]:lg:col-span-2">
           <SafetyPanel alerts={alerts} systemData={systemData} trays={trays} targetTemp={config.targetTemp} onAcknowledgeAlert={acknowledgeAlert} onClearAllAlerts={clearAllAlerts} />
           <EnergyMeter voltage={systemData.voltage} current={systemData.current} power={systemData.power} energy={systemData.energy} powerFactor={systemData.powerFactor} frequency={systemData.frequency} />
           <LightSensor intensity={systemData.lightIntensity} timestamp={systemData.timestamp} />
